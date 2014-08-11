@@ -36,7 +36,7 @@ public class Release {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date unPublish;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private State state;
 
     public Release() {

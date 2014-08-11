@@ -6,7 +6,6 @@ import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 import org.yellowbinary.cms.server.core.annotation.CachedModule;
 import org.yellowbinary.cms.server.core.dao.ConfigurationDao;
-import org.yellowbinary.cms.server.core.model.Configuration;
 import org.yellowbinary.cms.server.core.stereotypes.Module;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +19,14 @@ import java.util.*;
 @Component
 public class ModuleRepository {
 
-    private Logger LOG = LoggerFactory.getLogger(ModuleRepository.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ModuleRepository.class);
 
     @Autowired
     private ConfigurationDao configurationDao;
 
     public Map<String, CachedModule> modules = Maps.newHashMap();
 
-    public CachedModule add(Module module, Class c) {
+    public CachedModule add(Module module, Object bean) {
         if (modules.containsKey(module.name())) {
             throw new InitializationException("Duplicate Module name ["+module.name()+"]");
         }
@@ -36,13 +35,13 @@ public class ModuleRepository {
         }
 
         //noinspection unchecked
-        Module.Version moduleVersionAnnotation = (Module.Version) c.getAnnotation(Module.Version.class);
+        Module.Version moduleVersionAnnotation = bean.getClass().getAnnotation(Module.Version.class);
 
-        Method initMethod = getSingleMethod(c, Module.Init.class);
-        Method dependenciesMethod = getSingleMethod(c, Module.Dependencies.class);
-        Method annotationsMethod = getSingleMethod(c, Module.Annotations.class);
+        Method initMethod = getSingleMethod(bean.getClass(), Module.Init.class);
+        Method dependenciesMethod = getSingleMethod(bean.getClass(), Module.Dependencies.class);
+        Method annotationsMethod = getSingleMethod(bean.getClass(), Module.Annotations.class);
 
-        CachedModule value = new CachedModule(module.name(), c, module, moduleVersionAnnotation,
+        CachedModule value = new CachedModule(module.name(), bean, module, moduleVersionAnnotation,
                 initMethod, annotationsMethod, dependenciesMethod);
         modules.put(module.name(), value);
         return value;
@@ -71,11 +70,11 @@ public class ModuleRepository {
     }
 
     public boolean isEnabled(CachedModule module) {
-        return configurationDao.readValue(Boolean.class, "module." + module.name + ".enabled", true);
+        return configurationDao.readValue(Boolean.class, "module." + module.getName() + ".enabled", true);
     }
 
     public void enable(CachedModule module) {
-        configurationDao.updateValue("module."+ module.name+ ".enabled", true);
+        configurationDao.updateValue("module."+ module.getName()+ ".enabled", true);
     }
 
     public void enable(String moduleName) throws ModuleException {

@@ -1,12 +1,14 @@
 package org.yellowbinary.cms.server.core.model;
 
+import org.yellowbinary.cms.server.core.AbstractNode;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Entity
 @Table(name = "text")
-public class Text {
+public class Text extends AbstractNode {
 
     public static final String TYPE = "text";
 
@@ -16,7 +18,7 @@ public class Text {
 
     @NotNull
     @Column(unique = true)
-    private String identifier;
+    private String key;
 
     @NotNull
     @Column(name = "content")
@@ -31,12 +33,22 @@ public class Text {
         this.id = id;
     }
 
-    public String getIdentifier() {
-        return identifier;
+    public String getKey() {
+        return key;
     }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    @Override
+    public Integer getVersion() {
+        return 0;
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 
     public String getValue() {
@@ -48,7 +60,7 @@ public class Text {
     }
 
     public Text() {
-        this.identifier = UUID.randomUUID().toString();
+        this.key = UUID.randomUUID().toString();
         this.value = "";
     }
 

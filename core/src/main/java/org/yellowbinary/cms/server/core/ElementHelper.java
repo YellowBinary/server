@@ -21,7 +21,7 @@ public class ElementHelper {
     }
 
     public static void copyBasicAttributes(Element source, Element target) {
-        target.setId(source.getId());
+        target.setKey(source.getKey());
         target.setWeight(source.getWeight());
         for (Object attributeKey : source.getAttributes().keySet()) {
             target.addAttribute((String) attributeKey, source.getAttributes().get(attributeKey));

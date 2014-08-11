@@ -1,18 +1,22 @@
 package org.yellowbinary.cms.server.core.model;
 
+import org.yellowbinary.cms.server.core.AbstractNode;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="block")
-public class Block {
+public class Block extends AbstractNode {
+
+    public static final String TYPE = "yellowbinary.Block";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotNull
-    private String identifier;
+    private String key;
 
     @NotNull
     private String type;
@@ -31,12 +35,12 @@ public class Block {
         this.id = id;
     }
 
-    public String getIdentifier() {
-        return identifier;
+    public String getKey() {
+        return key;
     }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getType() {
@@ -45,6 +49,11 @@ public class Block {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public Integer getVersion() {
+        return 0;
     }
 
     public String getReferenceId() {
@@ -58,8 +67,8 @@ public class Block {
     @Override
     public String toString() {
         return "Block{" +
-                "id=" + id +
-                ", identifier='" + identifier + '\'' +
+                "key=" + id +
+                ", key='" + key + '\'' +
                 ", type='" + type + '\'' +
                 ", referenceId='" + referenceId + '\'' +
                 '}';

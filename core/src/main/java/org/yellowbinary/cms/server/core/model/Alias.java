@@ -18,15 +18,15 @@ public class Alias {
     private String path;
 
     @NotNull
-    private String pageId;
+    private String node;
 
     protected Alias() {
     }
 
-    public Alias(String path, String pageId) {
+    public Alias(String path, String node) {
         this();
         this.path = path;
-        this.pageId = pageId;
+        this.node = node;
     }
 
     public Long getId() {
@@ -45,12 +45,12 @@ public class Alias {
         this.path = path;
     }
 
-    public String getPageId() {
-        return pageId;
+    public String getNode() {
+        return node;
     }
 
-    public void setPageId(String pageId) {
-        this.pageId = pageId;
+    public void setNode(String node) {
+        this.node = node;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class Alias {
         return new StringBuilder().
                 append("Alias {").
                 append("path='").append(path).append("\', ").
-                append("pageId='").append(pageId).append('\'').
+                append("node='").append(node).append('\'').
                 append('}').
                 toString();
     }

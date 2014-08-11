@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-public class Element {
+public class Element extends AbstractNode {
 
-    public String id;
+    public String key;
 
     public String type;
 
@@ -22,64 +22,82 @@ public class Element {
 
     private int weight;
 
-
-    public String getId() {
-        return id;
+    public String getKey() {
+        return key;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public Element setKey(String key) {
+        this.key = key;
+        return this;
+    }
+
+    @Override
+    public Integer getVersion() {
+        return 0;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public Element setType(String type) {
         this.type = type;
+        return this;
     }
 
     public Map<String, String> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(Map<String, String> attributes) {
+    public Element setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
+        return this;
     }
 
-    public void addAttribute(String key, String value) {
+    public Element addAttribute(String key, String value) {
         this.attributes.put(key, value);
+        return this;
     }
 
     public List<Element> getChildren() {
         return children;
     }
 
-    public void setChildren(List<Element> children) {
+    public Element setChildren(List<Element> children) {
         this.children = children;
+        return this;
+    }
+
+    public Element addChild(Element element) {
+        this.children.add(element);
+        return this;
     }
 
     public String getBody() {
         return body;
     }
 
-    public void setBody(String body) {
+    public Element setBody(String body) {
         this.body = body;
+        return this;
     }
 
     public int getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public Element setWeight(int weight) {
         this.weight = weight;
+        return this;
     }
 
     public Element getParent() {
         return parent;
     }
 
-    public void setParent(Element parent) {
+    public Element setParent(Element parent) {
         this.parent = parent;
+        return this;
     }
+
 }

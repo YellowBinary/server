@@ -6,24 +6,53 @@ import java.lang.reflect.Method;
 
 public class CachedModule implements Comparable<CachedModule> {
 
-    public final String name;
-    public final Class clazz;
+    private final String name;
+    private final Object bean;
 
-    public final Module annotation;
-    public final Module.Version moduleVersion;
+    private final Module annotation;
+    private final Module.Version moduleVersion;
 
-    public final Method initMethod;
-    public final Method annotationsMethod;
-    public final Method dependenciesMethod;
+    private final Method initMethod;
+    private final Method annotationsMethod;
+    private final Method dependenciesMethod;
 
-    public CachedModule(String name, Class clazz, Module annotation, Module.Version moduleVersion, Method initMethod, Method annotationsMethod, Method dependencies) {
+    public CachedModule(String name, Object bean, Module annotation, Module.Version moduleVersion, Method initMethod,
+                        Method annotationsMethod, Method dependencies) {
         this.name = name;
         this.annotation = annotation;
-        this.clazz = clazz;
+        this.bean = bean;
         this.moduleVersion = moduleVersion;
         this.initMethod = initMethod;
         this.annotationsMethod = annotationsMethod;
         this.dependenciesMethod = dependencies;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Object getBean() {
+        return bean;
+    }
+
+    public Module getAnnotation() {
+        return annotation;
+    }
+
+    public Module.Version getModuleVersion() {
+        return moduleVersion;
+    }
+
+    public Method getInitMethod() {
+        return initMethod;
+    }
+
+    public Method getAnnotationsMethod() {
+        return annotationsMethod;
+    }
+
+    public Method getDependenciesMethod() {
+        return dependenciesMethod;
     }
 
     @Override

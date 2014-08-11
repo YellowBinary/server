@@ -3,10 +3,11 @@ package org.yellowbinary.cms.server.core.dao.navigation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.yellowbinary.cms.server.core.model.navigation.GroupHolderNavigation;
 
 @Repository
 @Transactional
-public interface GroupHolderNavigationDao extends JpaRepository<GroupHolderNavigationDao, Long> {
+public interface GroupHolderNavigationDao extends JpaRepository<GroupHolderNavigation, Long> {
 
 /*
     public static GroupHolderNavigation findWithIdentifier(String identifier) {

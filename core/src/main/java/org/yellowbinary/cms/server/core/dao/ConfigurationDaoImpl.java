@@ -1,15 +1,16 @@
 package org.yellowbinary.cms.server.core.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.yellowbinary.cms.server.core.model.Configuration;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 
 @Repository
 public class ConfigurationDaoImpl implements ConfigurationDao {
 
-    @Autowired
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Override
@@ -28,31 +29,37 @@ public class ConfigurationDaoImpl implements ConfigurationDao {
         }
 
         String value = configuration.getValue();
-        if (type.getClass().equals(Integer.class)) {
+        if (type.equals(String.class)) {
+            if (value != null) {
+                return (T)value;
+            }
+            return defaultValue;
+        }
+        if (type.equals(Integer.class)) {
             if (value != null) {
                 return (T) Integer.valueOf(value);
             }
             return defaultValue;
         }
-        if (type.getClass().equals(Long.class)) {
+        if (type.equals(Long.class)) {
             if (value != null) {
                 return (T)Long.valueOf(value);
             }
             return defaultValue;
         }
-        if (type.getClass().equals(Boolean.class)) {
+        if (type.equals(Boolean.class)) {
             if (value != null) {
                 return (T)Boolean.valueOf(value);
             }
             return defaultValue;
         }
-        if (type.getClass().equals(Float.class)) {
+        if (type.equals(Float.class)) {
             if (value != null) {
                 return (T)Float.valueOf(value);
             }
             return defaultValue;
         }
-        if (type.getClass().equals(Double.class)) {
+        if (type.equals(Double.class)) {
             if (value != null) {
                 return (T)Double.valueOf(value);
             }
@@ -62,9 +69,13 @@ public class ConfigurationDaoImpl implements ConfigurationDao {
     }
 
     private Configuration getConfiguration(String name) {
-        return (Configuration)entityManager.
-                    createQuery("SELECT c FROM Configuration WHERE name=:name").
-                    setParameter("name", name).getSingleResult();
+        try {
+            return (Configuration)entityManager.
+                        createQuery("SELECT c FROM Configuration c WHERE c.name=:name").
+                        setParameter("name", name).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override

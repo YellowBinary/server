@@ -10,10 +10,10 @@ import org.yellowbinary.cms.server.core.model.navigation.BasicNavigation;
 public interface BasicNavigationDao extends JpaRepository<BasicNavigation, Long> {
 
 /*
-    public static BasicNavigation findWithId(long id) {
+    public static BasicNavigation findWithId(long key) {
         try {
-            final Query query = JPA.em().createQuery("select bn from "+BasicNavigation.class.getName()+" bn where bn.id=:id");
-            query.setParameter("id", id);
+            final Query query = JPA.em().createQuery("select bn from "+BasicNavigation.class.getName()+" bn where bn.key=:key");
+            query.setParameter("key", key);
             return (BasicNavigation) query.getSingleResult();
         } catch (NoResultException e) {
             return null;
@@ -47,11 +47,11 @@ public interface BasicNavigationDao extends JpaRepository<BasicNavigation, Long>
     }
 
     public static List<BasicNavigation> findWithSection(String section, BasicNavigation parent) {
-        return findWithSection(section, parent.id);
+        return findWithSection(section, parent.key);
     }
 
     public static List<BasicNavigation> findWithSection(String section, Long parentId) {
-        final Query query = JPA.em().createQuery("select bn from "+BasicNavigation.class.getName()+" bn where bn.section=:section and bn.parent.id=:parentId");
+        final Query query = JPA.em().createQuery("select bn from "+BasicNavigation.class.getName()+" bn where bn.section=:section and bn.parent.key=:parentId");
         query.setParameter("section", section);
         query.setParameter("parentId", parentId);
         List<BasicNavigation> resultList = query.getResultList();

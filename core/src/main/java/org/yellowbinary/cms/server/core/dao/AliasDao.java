@@ -1,17 +1,26 @@
 package org.yellowbinary.cms.server.core.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.yellowbinary.cms.server.core.model.Alias;
+
+import java.util.List;
 
 @Repository
 @Transactional
 public interface AliasDao extends JpaRepository<Alias, Long> {
 
+    @Query("select a from Alias a where a.path=?1")
+    Alias findByPath(String path);
+
+    @Query("select a from Alias a where a.node=?1")
+    List<Alias> findByNode(String key);
+
     /*
-        public static Alias findWithId(long id) {
-        return JPA.em().find(Alias.class, id);
+        public static Alias findWithId(long key) {
+        return JPA.em().find(Alias.class, key);
     }
 
     public static Alias findWithPath(String path) {

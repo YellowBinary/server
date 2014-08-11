@@ -5,22 +5,21 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.yellowbinary.cms.server.core.model.BasicPage;
 
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import org.springframework.data.jpa.repository.Query;
 
 @Repository
 @Transactional
 public interface BasicPageDao extends JpaRepository<BasicPage, Long> {
 
+    @Query("select p from BasicPage p where p.key = ?1 and p.version = ?2")
+    BasicPage findKeyAndVersion(String key, Integer version);
+
 /*
     public List<BasicPage> findAllCurrentVersions(Date asOfDate) {
         try {
             String queryString = "select p from " + BasicPage.class.getName() + " p " +
-                    "where p.id in (" +
-                    "select n.id from models.origo.core.RootNode n where n.version = (" +
+                    "where p.key in (" +
+                    "select n.key from models.origo.core.RootNode n where n.version = (" +
                     "select max(n2.version) from models.origo.core.RootNode n2 left join n2.release r " +
                     "where n2.key = n.key and " +
                     "(r is null or (r.publish = null or r.publish < :today) and" +
@@ -38,8 +37,8 @@ public interface BasicPageDao extends JpaRepository<BasicPage, Long> {
         try {
             return (BasicPage) JPA.em().createQuery(
                     "select p from " + BasicPage.class.getName() + " p " +
-                            "where p.key = :key and p.id in (" +
-                            "select n.id from models.origo.core.RootNode n where n.version = (" +
+                            "where p.key = :key and p.key in (" +
+                            "select n.key from models.origo.core.RootNode n where n.version = (" +
                             "select max(n2.version) from models.origo.core.RootNode n2 left join n2.release r " +
                             "where n2.key = n.key and " +
                             "(r is null or " +
@@ -71,7 +70,7 @@ public interface BasicPageDao extends JpaRepository<BasicPage, Long> {
         }
     }
 
-    public BasicPage findWithNodeIdAndSpecificVersion(String key, Integer version) {
+    public BasicPage findByKeyAndVersion(String key, Integer version) {
         try {
             String queryString = "select p from " + BasicPage.class.getName() + " p " +
                     "where p.key = :key and p.version = :version";

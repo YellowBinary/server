@@ -1,13 +1,34 @@
 package org.yellowbinary.cms.server.core.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.yellowbinary.cms.server.core.model.RootNode;
 
+import java.awt.print.Pageable;
+import java.util.Date;
+
 @Repository
 @Transactional
 public interface RootNodeDao extends JpaRepository<RootNode, Long> {
+
+    @Query("select distinct rn from RootNode rn left join rn.release r " +
+            "where rn.key = ?1 and (r = null or (r.state = 'PUBLISHED' and (r.publish = null or r.publish < ?2) and " +
+            "(r.unPublish = null or r.unPublish >= ?2))) order by rn.version desc")
+    RootNode findByKeyAndPublishedDate(String key, Date date);
+
+    @Query("select rn from RootNode rn where rn.key = ?1 and rn.version = ?2")
+    RootNode findByKeyAndVersion(String key, Integer version);
+
+/*
+    @Query("select distinct n from RootNode n where n.key = ?1 order by n.version desc")
+    RootNode findLatestVersion(String key, Pageable pageable);
+
+    @Query("select distinct n from RootNode n where n.key = ?1 order by n.version desc")
+    RootNode findAllVersions(String key);
+*/
+
 
 /*
     private static void initializeNode(RootNode node) {
@@ -63,7 +84,7 @@ public interface RootNodeDao extends JpaRepository<RootNode, Long> {
         }
     }
 
-    public static RootNode findWithNodeIdAndSpecificVersion(String key, Integer version) {
+    public static RootNode findKeyAndVersion(String key, Integer version) {
         try {
             String queryString = "select n from "+RootNode.class.getName()+" n " +
                     "where n.key = :key and n.version = :version";

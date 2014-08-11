@@ -12,17 +12,17 @@ public class ReflectionInvoker {
     public static <T> T execute(CachedAnnotation cachedAnnotation, Object... args) {
 
         try {
-            Class[] parameterTypes = cachedAnnotation.method.getParameterTypes();
+            Class[] parameterTypes = cachedAnnotation.getMethod().getParameterTypes();
             Set<Object> validatedArgs = getValidatedArgs(parameterTypes, args);
 
             assertAllArgsFound(parameterTypes, validatedArgs, args);
 
             //noinspection unchecked
-            return (T) cachedAnnotation.method.invoke(null, validatedArgs.toArray());
+            return (T) cachedAnnotation.getMethod().invoke(cachedAnnotation.getBean(), validatedArgs.toArray());
         } catch (IllegalAccessException e) {
-            throw new RuntimeException("Unable to invoke method [" + cachedAnnotation.method.toString() + "]", e.getCause());
+            throw new RuntimeException("Unable to invoke method [" + cachedAnnotation.getMethod().toString() + "]", e.getCause());
         } catch (InvocationTargetException e) {
-            throw new RuntimeException("Unable to invoke method [" + cachedAnnotation.method.toString() + "]", e.getTargetException());
+            throw new RuntimeException("Method [" + cachedAnnotation.getMethod().toString() + "] threw an exception", e.getTargetException());
         }
 
     }

@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "configuration", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "profile"}))
+@Table(name = "configuration")
 public class Configuration {
 
     @Id
@@ -12,6 +12,7 @@ public class Configuration {
     public Long id;
 
     @NotNull
+    @Column(unique = true)
     private String name;
 
     @NotNull

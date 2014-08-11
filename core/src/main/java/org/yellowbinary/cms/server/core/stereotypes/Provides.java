@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
 @Component
 public @interface Provides {
 
-    String type() default "";
+    String base() default "";
 
     String with();
 

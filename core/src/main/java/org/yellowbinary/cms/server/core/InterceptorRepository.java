@@ -17,19 +17,19 @@ public class InterceptorRepository {
 
     public Map<Class<? extends Annotation>, Set<CachedAnnotation>> interceptors = Maps.newHashMap();
 
-    public void add(CachedModule module, Annotation annotation, Method method) {
+    public void add(CachedModule module, Annotation annotation, Method method, Object bean) {
         if (!interceptors.containsKey(annotation.annotationType())) {
             interceptors.put(annotation.annotationType(), Sets.<CachedAnnotation>newHashSet());
         }
         Set<CachedAnnotation> annotationTypes = interceptors.get(annotation.annotationType());
-        annotationTypes.add(new CachedAnnotation(module, annotation, method));
+        annotationTypes.add(new CachedAnnotation(module, annotation, method, bean));
     }
 
     public Set<CachedAnnotation> getInterceptors(Class<? extends Annotation> annotationType) {
         return getInterceptors(annotationType, null);
     }
 
-    public Set<CachedAnnotation> getInterceptors(Class<? extends Annotation> annotationType, CachedAnnotation.InterceptorSelector interceptorSelector) {
+    public Set<CachedAnnotation> getInterceptors(Class<? extends Annotation> annotationType, InterceptorSelector interceptorSelector) {
         if (interceptors.containsKey(annotationType)) {
             Set<CachedAnnotation> interceptorList = interceptors.get(annotationType);
             if (interceptorSelector == null) {
@@ -54,4 +54,9 @@ public class InterceptorRepository {
     public Map<Class<? extends Annotation>, Set<CachedAnnotation>> getInterceptorMap() {
         return Collections.unmodifiableMap(interceptors);
     }
+
+    public static interface InterceptorSelector {
+        boolean isCorrectInterceptor(CachedAnnotation cachedAnnotation);
+    }
+
 }
