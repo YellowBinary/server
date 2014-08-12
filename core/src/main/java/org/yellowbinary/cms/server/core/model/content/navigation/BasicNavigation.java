@@ -1,4 +1,4 @@
-package org.yellowbinary.cms.server.core.model.navigation;
+package org.yellowbinary.cms.server.core.model.content.navigation;
 
 import org.yellowbinary.cms.server.core.Navigation;
 

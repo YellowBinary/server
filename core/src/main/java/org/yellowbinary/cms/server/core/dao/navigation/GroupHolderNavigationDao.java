@@ -3,7 +3,7 @@ package org.yellowbinary.cms.server.core.dao.navigation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.yellowbinary.cms.server.core.model.navigation.GroupHolderNavigation;
+import org.yellowbinary.cms.server.core.model.content.navigation.GroupHolderNavigation;
 
 @Repository
 @Transactional

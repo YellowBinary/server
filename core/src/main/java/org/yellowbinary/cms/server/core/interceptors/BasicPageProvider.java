@@ -1,10 +1,12 @@
 package org.yellowbinary.cms.server.core.interceptors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.yellowbinary.cms.server.core.*;
 import org.yellowbinary.cms.server.core.dao.BasicPageDao;
 import org.yellowbinary.cms.server.core.dao.MetaDao;
-import org.yellowbinary.cms.server.core.model.BasicPage;
+import org.yellowbinary.cms.server.core.model.content.BasicPage;
 import org.yellowbinary.cms.server.core.model.Meta;
 import org.yellowbinary.cms.server.core.model.RootNode;
 import org.yellowbinary.cms.server.core.service.NodeService;
@@ -19,6 +21,8 @@ import java.util.Map;
  */
 @Interceptor
 public class BasicPageProvider {
+
+    private static final Logger LOG = LoggerFactory.getLogger(BasicPageProvider.class);
 
     public static final String TYPE = BasicPage.TYPE;
 
@@ -43,15 +47,22 @@ public class BasicPageProvider {
     }
 
     @OnLoad(base = Core.Base.NODE, with = TYPE)
-    public void loadContent(Node node, String withType, Map<String, Object> args) throws ModuleException, NodeLoadException, NodeNotFoundException {
+    public void decoratePage(Node node, String withType, Map<String, Object> args) throws ModuleException, NodeLoadException, NodeNotFoundException {
 
         BasicPage page = (BasicPage) node;
 
         for (String blockIdentifier : page.getBlocks()) {
-            Element element = (Element) nodeService.loadNode(blockIdentifier, 0);
-            Meta meta = metaDao.findByKey(node.getKey(), node.getVersion(), blockIdentifier);
-            node.addElement(element, meta);
+            Node block = nodeService.loadNode(blockIdentifier, 0);
+            Meta meta = metaDao.findByKey(node.getKey(), 0, blockIdentifier);
+            if (meta != null) {
+                node.addChild(block, meta);
+            }
+            LOG.warn("No meta, using default");
+            node.addChild(block, Meta.defaultMeta());
         }
+
+        //TODO: Handle this somehow, in dev/admin maybe show a Element with a warning message and in prod swallow error?
+
     }
 
 }

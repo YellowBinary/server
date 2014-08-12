@@ -36,7 +36,6 @@ public class NodeController {
     public Node getNode() throws NodeNotFoundException, NodeLoadException, ModuleException {
 
         String startPageId = configurationDao.readValue(String.class, Core.Settings.START_PAGE);
-
         return nodeService.load(startPageId);
     }
 

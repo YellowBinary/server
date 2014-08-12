@@ -6,6 +6,11 @@ import org.yellowbinary.cms.server.core.Core;
 import org.yellowbinary.cms.server.core.State;
 import org.yellowbinary.cms.server.core.dao.*;
 import org.yellowbinary.cms.server.core.model.*;
+import org.yellowbinary.cms.server.core.model.Alias;
+import org.yellowbinary.cms.server.core.model.content.BasicPage;
+import org.yellowbinary.cms.server.core.model.content.Block;
+import org.yellowbinary.cms.server.core.model.Meta;
+import org.yellowbinary.cms.server.core.model.content.Text;
 
 import javax.transaction.Transactional;
 import java.util.UUID;

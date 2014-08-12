@@ -11,9 +11,9 @@ import org.yellowbinary.cms.server.core.*;
 import org.yellowbinary.cms.server.core.annotation.CachedAnnotation;
 import org.yellowbinary.cms.server.core.annotation.ReflectionInvoker;
 import org.yellowbinary.cms.server.core.context.Context;
-import org.yellowbinary.cms.server.core.model.Block;
+import org.yellowbinary.cms.server.core.model.content.Block;
 import org.yellowbinary.cms.server.core.model.RootNode;
-import org.yellowbinary.cms.server.core.model.Text;
+import org.yellowbinary.cms.server.core.model.content.Text;
 import org.yellowbinary.cms.server.core.stereotypes.Provides;
 
 import java.util.List;

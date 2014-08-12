@@ -1,4 +1,4 @@
-package org.yellowbinary.cms.server.core.model.navigation;
+package org.yellowbinary.cms.server.core.model.content.navigation;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

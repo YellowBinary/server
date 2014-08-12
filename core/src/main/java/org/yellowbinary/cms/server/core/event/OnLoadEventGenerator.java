@@ -8,7 +8,7 @@ import org.yellowbinary.cms.server.core.*;
 import org.yellowbinary.cms.server.core.annotation.CachedAnnotation;
 import org.yellowbinary.cms.server.core.annotation.ReflectionInvoker;
 import org.yellowbinary.cms.server.core.model.RootNode;
-import org.yellowbinary.cms.server.core.model.Text;
+import org.yellowbinary.cms.server.core.model.content.Text;
 import org.yellowbinary.cms.server.core.stereotypes.OnLoad;
 
 import java.util.Collections;
@@ -53,6 +53,15 @@ public class OnLoadEventGenerator {
         }
     }
 
+    public void triggerAfterInterceptor(Node node, String type, String withType, Map<String, Object> args) throws NodeLoadException, ModuleException {
+        List<CachedAnnotation> interceptorList = findInterceptorForType(type, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), true);
+        if (interceptorList != null && !interceptorList.isEmpty()) {
+            for (CachedAnnotation cachedAnnotation : interceptorList) {
+                ReflectionInvoker.execute(cachedAnnotation, node, withType, args);
+            }
+        }
+    }
+
 /*
     public void triggerBeforeInterceptor(Node node, String type, String withType, Navigation navigation, Map<String, Object> args) throws NodeLoadException, ModuleException {
         List<CachedAnnotation> interceptors = findInterceptorForType(type, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), false);
@@ -71,7 +80,6 @@ public class OnLoadEventGenerator {
             }
         }
     }
-*/
 
     public void triggerBeforeInterceptor(Node node, String type, String withType, Element element, Map<String, Object> args) throws NodeLoadException, ModuleException {
         List<CachedAnnotation> interceptors = findInterceptorForType(type, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), false);
@@ -90,15 +98,7 @@ public class OnLoadEventGenerator {
             }
         }
     }
-
-    public void triggerAfterInterceptor(Node node, String onLoadType, String withType, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        List<CachedAnnotation> interceptorList = findInterceptorForType(onLoadType, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), true);
-        if (interceptorList != null && !interceptorList.isEmpty()) {
-            for (CachedAnnotation cachedAnnotation : interceptorList) {
-                ReflectionInvoker.execute(cachedAnnotation, node, withType, args);
-            }
-        }
-    }
+*/
 
 /*
     public void triggerAfterInterceptor(Node node, String onLoadType, String withType, Navigation navigation, Map<String, Object> args) throws NodeLoadException, ModuleException {
@@ -118,7 +118,6 @@ public class OnLoadEventGenerator {
             }
         }
     }
-*/
 
     public void triggerAfterInterceptor(Node node, String onLoadType, String withType, Element element, Map<String, Object> args) throws NodeLoadException, ModuleException {
         List<CachedAnnotation> interceptorList = findInterceptorForType(onLoadType, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), true);
@@ -129,7 +128,6 @@ public class OnLoadEventGenerator {
         }
     }
 
-/*
     public void triggerAfterInterceptor(Node node, String onLoadType, String withType, Form form, Element element, Map<String, Object> args) throws NodeLoadException, ModuleException {
         List<CachedAnnotation> interceptorList = findInterceptorForType(onLoadType, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), true);
         if (interceptorList != null && !interceptorList.isEmpty()) {

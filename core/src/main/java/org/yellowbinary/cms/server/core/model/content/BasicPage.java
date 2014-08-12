@@ -1,5 +1,6 @@
-package org.yellowbinary.cms.server.core.model;
+package org.yellowbinary.cms.server.core.model.content;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.google.common.collect.Sets;
 import org.yellowbinary.cms.server.core.AbstractNode;
 import org.yellowbinary.cms.server.core.Node;
@@ -12,11 +13,12 @@ import java.util.Set;
  * The basic type for a page. Directly linked to a RootNode, both it's version and key.
  *
  * @see Node
- * @see RootNode
+ * @see org.yellowbinary.cms.server.core.model.RootNode
  * @see org.yellowbinary.cms.server.core.interceptors.BasicPageProvider
  */
 @Entity
 @Table(name = "page_basic", uniqueConstraints = @UniqueConstraint(columnNames = {"parentKey", "parentVersion"}))
+@JsonPropertyOrder({ "id", "key", "version", "type", "weight", "title", "blocks", "regions", "children" })
 public class BasicPage extends AbstractNode {
 
     public static final String TYPE = "yellowbinary.Basicpage";
@@ -48,44 +50,78 @@ public class BasicPage extends AbstractNode {
         return id;
     }
 
-    public void setId(Long id) {
+    public Node setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getKey() {
         return this.key;
     }
 
-    public void setKey(String key) {
+    public Node setKey(String key) {
         this.key = key;
+        return this;
     }
 
     public String getType() {
         return TYPE;
     }
 
+    public Node setType(String type) {
+        return this;
+    }
+
     public Integer getVersion() {
         return version;
     }
 
-    public void setVersion(Integer version) {
+    public Node setVersion(Integer version) {
         this.version = version;
+        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public BasicPage setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public Set<String> getBlocks() {
         return blocks;
     }
 
-    public void setBlocks(Set<String> blocks) {
+    public Node setBlocks(Set<String> blocks) {
         this.blocks = blocks;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BasicPage basicPage = (BasicPage) o;
+
+        return !(blocks != null ? !blocks.equals(basicPage.blocks) : basicPage.blocks != null) &&
+                !(id != null ? !id.equals(basicPage.id) : basicPage.id != null) &&
+                !(key != null ? !key.equals(basicPage.key) : basicPage.key != null) &&
+                !(title != null ? !title.equals(basicPage.title) : basicPage.title != null) &&
+                !(version != null ? !version.equals(basicPage.version) : basicPage.version != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (key != null ? key.hashCode() : 0);
+        result = 31 * result + (version != null ? version.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (blocks != null ? blocks.hashCode() : 0);
+        return result;
     }
 
     @Override

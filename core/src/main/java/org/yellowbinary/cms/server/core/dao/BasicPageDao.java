@@ -3,7 +3,7 @@ package org.yellowbinary.cms.server.core.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.yellowbinary.cms.server.core.model.BasicPage;
+import org.yellowbinary.cms.server.core.model.content.BasicPage;
 
 import org.springframework.data.jpa.repository.Query;
 

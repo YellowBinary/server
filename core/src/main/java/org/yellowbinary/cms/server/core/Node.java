@@ -3,6 +3,7 @@ package org.yellowbinary.cms.server.core;
 import org.yellowbinary.cms.server.core.model.Meta;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -21,6 +22,8 @@ public interface Node {
      */
     String getKey();
 
+    Node setKey(String key);
+
     /**
      * The base type of the node
      *
@@ -28,13 +31,11 @@ public interface Node {
      */
     String getType();
 
-    /**
-     * The version of this node
-     *
-     * @return a version number
-     */
-    Integer getVersion();
+    Node setType(String type);
 
+    Integer getWeight();
+
+    Node setWeight(Integer weight);
 
     /**
      * All the available regions stored on this node.
@@ -44,45 +45,51 @@ public interface Node {
     Set<String> getRegions();
 
     /**
-     * A collection of UIElements that should be rendered on the screen. Regions are determined by the theme variant used.
+     * A collection of children that should be rendered on the screen. Regions are determined by the theme variant used.
      *
-     * @param region the area of the screen where this element should be rendered
-     * @return all uiElements for the region
+     * @param region the area of the screen where this node should be rendered
+     * @return all children for the region
      */
-    List<Element> getElements(String region);
+    List<Node> getChildren(String region);
 
     /**
-     * Add an element that should be rendered on the page with preloaded meta information. Regions are determined by the theme variant used.
-     *
-     *
-     * @param element            the element to be rendered
-     * @param meta              preloaded/static meta to be used for placing the element in the page
-     * @return the newly added Element
+     * Returns all children and their region
+     * @return all children
      */
-    Element addElement(Element element, Meta meta);
+    Map<String, List<Node>> getChildren();
 
     /**
-     * Add an element that should be rendered on the page with preloaded meta information. Regions are determined by the theme variant used.
+     * Add an node that should be rendered on the page with preloaded meta information. Regions are determined by the theme variant used.
      *
      *
-     * @param element            the element to be rendered
-     * @param meta              preloaded/static meta to be used for placing the element in the page
-     * @param reorderElementsBelow if true then all elements below this new element will be reordered according to their individual weight
-     * @return the newly added Element
+     * @param node            the node to be rendered
+     * @param meta              preloaded/static meta to be used for placing the node in the page
+     * @return the newly added Node
      */
-    Element addElement(Element element, Meta meta, boolean reorderElementsBelow);
+    Node addChild(Node node, Meta meta);
 
     /**
-     * Removes an element so it is not rendered. Will force a reordering of all elements below.
+     * Add an node that should be rendered on the page with preloaded meta information. Regions are determined by the theme variant used.
      *
-     * @param element the element to be rendered
-     * @return if an object matching the region and the element could be found and removed
+     *
+     * @param node            the node to be rendered
+     * @param meta              preloaded/static meta to be used for placing the node in the page
+     * @param reorderChildrenBelow if true then all children below this new node will be reordered according to their individual weight
+     * @return the newly added Node
      */
-    boolean removeElement(Element element);
+    Node addChild(Node node, Meta meta, boolean reorderChildrenBelow);
 
     /**
-     * Checks if there are any elements added to the node
+     * Removes an node so it is not rendered. Will force a reordering of all children below.
+     *
+     * @param node the node to be rendered
+     * @return if an object matching the region and the node could be found and removed
      */
-    boolean hasElements();
+    boolean removeChild(Node node);
+
+    /**
+     * Checks if there are any children added to the node
+     */
+    boolean hasChildren();
 
 }
