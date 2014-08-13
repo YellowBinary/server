@@ -12,7 +12,7 @@ public class ContextFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        Context.set();
+        Context.set(httpServletRequest, httpServletResponse);
         try {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } finally {

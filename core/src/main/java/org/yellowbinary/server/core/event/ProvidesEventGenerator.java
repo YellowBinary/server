@@ -122,18 +122,18 @@ public class ProvidesEventGenerator {
         });
     }
 
-    public CachedAnnotation findInterceptor(final String nodeType, final String withType) {
+    public CachedAnnotation findInterceptor(final String baseType, final String withType) {
         List<CachedAnnotation> providers = Lists.newArrayList(interceptorRepository.getInterceptors(Provides.class, new InterceptorRepository.InterceptorSelector() {
             @Override
             public boolean isCorrectInterceptor(CachedAnnotation cachedAnnotation) {
                 Provides annotation = (Provides) cachedAnnotation.getAnnotation();
-                return annotation.base().equals(nodeType) && annotation.with().equals(withType);
+                return annotation.base().equals(baseType) && annotation.with().equals(withType);
             }
         }));
 
-        CachedAnnotation cacheAnnotation = eventHandlerService.selectEventHandler(Provides.class, nodeType, withType, providers);
+        CachedAnnotation cacheAnnotation = eventHandlerService.selectEventHandler(Provides.class, baseType, withType, providers);
         if (cacheAnnotation == null) {
-            throw new NoSuchProviderException(nodeType, withType, "Every type (specified by using attribute 'with') must have a class annotated with @Provides to instantiate an instance. Unable to find a provider for type '" + nodeType + "' with '"+withType+"'");
+            throw new NoSuchProviderException(baseType, withType, "Every type (specified by using attribute 'with') must have a class annotated with @Provides to instantiate an instance. Unable to find a provider for type '" + baseType + "' with '"+withType+"'");
         }
         return cacheAnnotation;
     }

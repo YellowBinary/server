@@ -73,8 +73,8 @@ public class NodeService {
         // Check for a preview ticket and decorateNode the corresponding rootnode
         Ticket ticket = previewEventGenerator.getValidTicket();
         if (ticket != null) {
-            LOG.trace("Preview Ticket found, ignoring version and using preview date of: "+ticket.preview().toString());
-            rootNode = rootNodeDao.findByKeyAndPublishedDate(nodeId, ticket.preview().toDate());
+            LOG.trace("Preview Ticket found, ignoring version and using preview date of: "+ticket.getPreviewDateTime().toString());
+            rootNode = rootNodeDao.findByKeyAndPublishedDate(nodeId, ticket.getPreviewDateTime().toDate());
         } else {
             //Load RootNode model
             if (version > 0) {

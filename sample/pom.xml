@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>Server</artifactId>
-        <groupId>org.yellowbinary.cms.server</groupId>
+        <groupId>org.yellowbinary.server</groupId>
         <version>0.1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -20,8 +20,14 @@
 
         <!-- Internal -->
         <dependency>
-            <groupId>org.yellowbinary.cms.server</groupId>
+            <groupId>org.yellowbinary.server</groupId>
             <artifactId>Core</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yellowbinary.server</groupId>
+            <artifactId>Preview</artifactId>
             <version>0.1.0</version>
         </dependency>
 

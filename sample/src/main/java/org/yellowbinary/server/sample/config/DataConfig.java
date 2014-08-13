@@ -20,10 +20,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@EnableJpaRepositories(basePackages = {
-        "org.yellowbinary.server.core.dao",
-        "org.yellowbinary.server.core.dao.navigation"
-})
+@EnableJpaRepositories(basePackages = { "org.yellowbinary.server" })
 @EnableTransactionManagement
 public class DataConfig {
 
@@ -42,8 +39,7 @@ public class DataConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSource());
-        String property = env.getProperty("dataaccess.packages");
-        emf.setPackagesToScan(property.split(","));
+        emf.setPackagesToScan("org.yellowbinary.server");
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         emf.setJpaVendorAdapter(vendorAdapter);

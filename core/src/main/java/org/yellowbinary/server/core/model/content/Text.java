@@ -13,7 +13,7 @@ import java.util.UUID;
 @JsonPropertyOrder({ "id", "key", "type", "weight", "value", "regions", "children" })
 public class Text extends AbstractNode {
 
-    public static final String TYPE = "text";
+    public static final String TYPE = "yellowbinary.text";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

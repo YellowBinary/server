@@ -4,14 +4,12 @@ import org.joda.time.DateTime;
 
 public interface Ticket {
 
-    boolean isValid();
+    String getUserId();
 
-    String userId();
+    String getToken();
 
-    String token();
+    DateTime getValidUntilDateTime();
 
-    DateTime validUntil();
-
-    DateTime preview();
+    DateTime getPreviewDateTime();
 
 }
