@@ -5,6 +5,11 @@ public final class Security {
     private Security() {
     }
 
+    public static class Header {
+        public static final String SESSION_KEY = "X-Session-Timestamp";
+        public static final String TOKEN_KEY = "X-Auth-Token";
+    }
+
     public static class Params {
         public static final String AUTH_HANDLER = "authorization_handler";
         public static final String AUTH_META = "authorization_meta";

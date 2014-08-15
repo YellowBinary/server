@@ -24,7 +24,7 @@ import java.util.UUID;
 @Service
 public class PreviewService {
 
-    private static final String SESSION_PREVIEW_TICKET_KEY = "origo.session.preview_ticket";
+    private static final String SESSION_PREVIEW_TICKET_KEY = "yellowbinary.session.preview_ticket";
 
     @Autowired
     private ConfigurationDao configurationDao;
