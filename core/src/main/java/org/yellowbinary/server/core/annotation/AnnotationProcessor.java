@@ -186,13 +186,13 @@ public class AnnotationProcessor {
                     Class[] parameterTypes = prototype.expectedParameterTypes;
                     Class[] pc = m.getParameterTypes();
                     if (pc.length != parameterTypes.length) {
-                        sb.append("Method '").append(m.getDeclaringClass()).append(".").append(m.getName()).append("(").append(StringUtils.join(m.getParameterTypes())).append(")' is annotated with '").append(annotationClass.getName()).append("' but the method does not match the required signature (different amount of parameters)");
+                        sb.append("Method '").append(m.getDeclaringClass()).append(".").append(m.getName()).append("(").append(StringUtils.join(StringUtils.join(m.getParameterTypes()))).append(")' is annotated with '").append(annotationClass.getName()).append("' but the method does not match the required signature (different amount of parameters)");
                         break;
                     }
                     for (int i = 0; i < pc.length; i++) {
                         //noinspection unchecked
                         if (!parameterTypes[i].isAssignableFrom(pc[i])) {
-                            sb.append("Method '").append(m.getDeclaringClass().getName()).append(".").append(m.getName()).append(StringUtils.join(m.getParameterTypes())).append("(").append(")' is annotated with '").append(annotationClass.getName()).append("' but the method does not match the required signature (parameter '").append(parameterTypes[i].getName()).append("' has the wrong type)");
+                            sb.append("Method '").append(m.getDeclaringClass().getName()).append(".").append(m.getName()).append("(").append(StringUtils.join(StringUtils.join(m.getParameterTypes()))).append(")' is annotated with '").append(annotationClass.getName()).append("' but the method does not match the required signature (parameter '").append(parameterTypes[i].getName()).append("' has the wrong type)");
                             break;
                         }
                     }
@@ -200,7 +200,7 @@ public class AnnotationProcessor {
                     Class returnType = prototype.expectedReturnType;
                     //noinspection unchecked
                     if (returnType != null && !returnType.isAssignableFrom(m.getReturnType())) {
-                        sb.append("Method '").append(m.getDeclaringClass().getName()).append(".").append(m.getName()).append(StringUtils.join(m.getParameterTypes())).append("(").append(")' is annotated with '").append(annotationClass.getName()).append("' but the method does not match the required signature (wrong return type, expected [").append(returnType).append("] and found [").append(m.getReturnType()).append("])");
+                        sb.append("Method '").append(m.getDeclaringClass().getName()).append(".").append(m.getName()).append("(").append(StringUtils.join(StringUtils.join(m.getParameterTypes()))).append(")' is annotated with '").append(annotationClass.getName()).append("' but the method does not match the required signature (wrong return type, expected [").append(returnType).append("] and found [").append(m.getReturnType()).append("])");
                         break;
                     }
                 }

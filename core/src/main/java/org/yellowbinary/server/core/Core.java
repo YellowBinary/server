@@ -41,19 +41,6 @@ public final class Core {
     public class With {
         public static final String EDITOR = "richtexteditor";
 
-        public static final String AUTHORIZATION_SUBJECT = "authorization_subject";
-        public static final String AUTHORIZATION_FAILURE = "authorization_failure";
-        public static final String AUTHORIZATION_CHECK = "authorization_check";
-        public static final String AUTHORIZATION_ROLES = "authorization_roles";
-
-        public static final String AUTHENTICATION_CHECK = "authentication_check";
-        public static final String AUTHENTICATION_CURRENT_USER = "authentication_current_user";
-        public static final String AUTHENTICATION_VALIDATE = "authentication_validate";
-        public static final String AUTHENTICATION_SIGNOUT = "authentication_signout";
-
-        public static final String PREVIEW_CREATE = "preview_create";
-        public static final String PREVIEW_TOKEN = "preview_token";
-
         public static final String VALIDATION_DEFAULT_FAILURE = "validation_default_failure";
     }
 

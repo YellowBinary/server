@@ -22,7 +22,7 @@ public class PreviewEventGenerator {
         Ticket ticket = (Ticket) Context.current().getAttribute(REQUEST_PREVIEW_TOKEN);
         if (ticket == null) {
             try {
-                ticket = providesEventGenerator.triggerInterceptor(null, Core.Base.PREVIEW, Core.With.PREVIEW_TOKEN);
+                ticket = providesEventGenerator.triggerInterceptor(null, Core.Base.PREVIEW, Preview.With.PREVIEW_TOKEN);
                 if (ticket != null) {
                     Context.current().addAttribute(REQUEST_PREVIEW_TOKEN, ticket);
                 }

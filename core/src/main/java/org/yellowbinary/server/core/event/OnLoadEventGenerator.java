@@ -53,116 +53,22 @@ public class OnLoadEventGenerator {
         }
     }
 
-    public void triggerAfterInterceptor(Node node, String type, String withType, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        List<CachedAnnotation> interceptorList = findInterceptorForType(type, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), true);
+    public void triggerAfterInterceptor(Node node, String base, String with, Map<String, Object> args) throws NodeLoadException, ModuleException {
+        List<CachedAnnotation> interceptorList = findInterceptorForType(base, !StringUtils.isBlank(with) ? with : node.getClass().getName(), true);
         if (interceptorList != null && !interceptorList.isEmpty()) {
             for (CachedAnnotation cachedAnnotation : interceptorList) {
-                ReflectionInvoker.execute(cachedAnnotation, node, withType, args);
+                ReflectionInvoker.execute(cachedAnnotation, node, with, args);
             }
         }
     }
 
-/*
-    public void triggerBeforeInterceptor(Node node, String type, String withType, Navigation navigation, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        List<CachedAnnotation> interceptors = findInterceptorForType(type, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), false);
-        if (interceptors != null && !interceptors.isEmpty()) {
-            for (CachedAnnotation cachedAnnotation : interceptors) {
-                ReflectionInvoker.execute(cachedAnnotation, node, withType, navigation, args);
-            }
-        }
-    }
-
-    public void triggerBeforeInterceptor(Node node, String type, String withType, Form form, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        List<CachedAnnotation> interceptors = findInterceptorForType(type, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), false);
-        if (interceptors != null && !interceptors.isEmpty()) {
-            for (CachedAnnotation cachedAnnotation : interceptors) {
-                ReflectionInvoker.execute(cachedAnnotation, node, withType, form, args);
-            }
-        }
-    }
-
-    public void triggerBeforeInterceptor(Node node, String type, String withType, Element element, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        List<CachedAnnotation> interceptors = findInterceptorForType(type, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), false);
-        if (interceptors != null && !interceptors.isEmpty()) {
-            for (CachedAnnotation cachedAnnotation : interceptors) {
-                ReflectionInvoker.execute(cachedAnnotation, node, withType, element, args);
-            }
-        }
-    }
-
-    public void triggerBeforeInterceptor(Node node, String type, String withType, Text text, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        List<CachedAnnotation> interceptors = findInterceptorForType(type, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), false);
-        if (interceptors != null && !interceptors.isEmpty()) {
-            for (CachedAnnotation cachedAnnotation : interceptors) {
-                ReflectionInvoker.execute(cachedAnnotation, node, withType, text, args);
-            }
-        }
-    }
-*/
-
-/*
-    public void triggerAfterInterceptor(Node node, String onLoadType, String withType, Navigation navigation, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        List<CachedAnnotation> interceptorList = findInterceptorForType(onLoadType, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), true);
-        if (interceptorList != null && !interceptorList.isEmpty()) {
-            for (CachedAnnotation cachedAnnotation : interceptorList) {
-                ReflectionInvoker.execute(cachedAnnotation, node, withType, navigation, args);
-            }
-        }
-    }
-
-    public void triggerAfterInterceptor(Node node, String onLoadType, String withType, Form form, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        List<CachedAnnotation> interceptorList = findInterceptorForType(onLoadType, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), true);
-        if (interceptorList != null && !interceptorList.isEmpty()) {
-            for (CachedAnnotation cachedAnnotation : interceptorList) {
-                ReflectionInvoker.execute(cachedAnnotation, node, withType, form, args);
-            }
-        }
-    }
-
-    public void triggerAfterInterceptor(Node node, String onLoadType, String withType, Element element, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        List<CachedAnnotation> interceptorList = findInterceptorForType(onLoadType, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), true);
-        if (interceptorList != null && !interceptorList.isEmpty()) {
-            for (CachedAnnotation cachedAnnotation : interceptorList) {
-                ReflectionInvoker.execute(cachedAnnotation, node, withType, element, args);
-            }
-        }
-    }
-
-    public void triggerAfterInterceptor(Node node, String onLoadType, String withType, Form form, Element element, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        List<CachedAnnotation> interceptorList = findInterceptorForType(onLoadType, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), true);
-        if (interceptorList != null && !interceptorList.isEmpty()) {
-            for (CachedAnnotation cachedAnnotation : interceptorList) {
-                ReflectionInvoker.execute(cachedAnnotation, node, withType, form, element, args);
-            }
-        }
-    }
-
-    public void triggerAfterInterceptor(Node node, String onLoadType, String withType, Navigation navigation, NavigationElement element, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        List<CachedAnnotation> interceptorList = findInterceptorForType(onLoadType, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), true);
-        if (interceptorList != null && !interceptorList.isEmpty()) {
-            for (CachedAnnotation cachedAnnotation : interceptorList) {
-                ReflectionInvoker.execute(cachedAnnotation, node, withType, navigation, element, args);
-            }
-        }
-    }
-*/
-
-    public void triggerAfterInterceptor(Node node, String onLoadType, String withType, Text text, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        List<CachedAnnotation> interceptorList = findInterceptorForType(onLoadType, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), true);
-        if (interceptorList != null && !interceptorList.isEmpty()) {
-            for (CachedAnnotation cachedAnnotation : interceptorList) {
-                ReflectionInvoker.execute(cachedAnnotation, node, withType, text, args);
-            }
-        }
-    }
-
-    private List<CachedAnnotation> findInterceptorForType(final String onLoadType, final String withType, final boolean after) {
+    private List<CachedAnnotation> findInterceptorForType(final String onLoadType, final String with, final boolean after) {
         List<CachedAnnotation> interceptors = Lists.newArrayList(interceptorRepository.getInterceptors(OnLoad.class, new InterceptorRepository.InterceptorSelector() {
             @Override
             public boolean isCorrectInterceptor(CachedAnnotation cachedAnnotation) {
                 OnLoad annotation = ((OnLoad) cachedAnnotation.getAnnotation());
                 return annotation.base().equals(onLoadType) && annotation.after() == after &&
-                        (StringUtils.isBlank(annotation.with()) || annotation.with().equals(withType));
+                        (StringUtils.isBlank(annotation.with()) || annotation.with().equals(with));
             }
         }));
         Collections.sort(interceptors, new Comparator<CachedAnnotation>() {

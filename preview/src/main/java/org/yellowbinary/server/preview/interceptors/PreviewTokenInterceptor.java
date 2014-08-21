@@ -8,6 +8,7 @@ import org.yellowbinary.server.core.NodeLoadException;
 import org.yellowbinary.server.core.context.Context;
 import org.yellowbinary.server.core.model.Meta;
 import org.yellowbinary.server.core.model.content.Text;
+import org.yellowbinary.server.core.preview.Preview;
 import org.yellowbinary.server.core.preview.Ticket;
 import org.yellowbinary.server.core.stereotypes.Interceptor;
 import org.yellowbinary.server.core.stereotypes.OnLoad;
@@ -15,7 +16,6 @@ import org.yellowbinary.server.core.stereotypes.Provides;
 import org.yellowbinary.server.preview.model.BasicTicket;
 import org.yellowbinary.server.preview.service.PreviewService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Interceptor
@@ -98,8 +98,9 @@ public class PreviewTokenInterceptor {
         return "Preview-Ticket { token: \""+ basicTicket.getToken()+"\", valid-until: \"\\/Date("+ basicTicket.getValidUntilDateTime().getMillis()+")\\/\" }";
     }
 
-    @Provides(base = Core.Base.PREVIEW, with = Core.With.PREVIEW_TOKEN)
+    @Provides(base = Core.Base.PREVIEW, with = Preview.With.PREVIEW_TOKEN)
     public Ticket getCurrentToken(Node node, String withType, Map<String, Object> args) throws ModuleException, NodeLoadException {
         return previewService.getCurrent();
     }
+
 }

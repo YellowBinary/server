@@ -14,7 +14,6 @@ import org.yellowbinary.server.core.helpers.DateHelper;
 import org.yellowbinary.server.core.security.Security;
 import org.yellowbinary.server.core.service.SessionService;
 import org.yellowbinary.server.core.security.User;
-import org.yellowbinary.server.preview.Preview;
 import org.yellowbinary.server.preview.dao.BasicTicketDao;
 import org.yellowbinary.server.preview.model.BasicTicket;
 
@@ -80,7 +79,7 @@ public class PreviewService {
 
     public Period getPreviewTicketPeriod() {
         if (previewTicketPeriod == null) {
-            String period = configurationDao.readValue(String.class, Preview.Settings.PREVIEW_TICKET_PERIOD);
+            String period = configurationDao.readValue(String.class, "yellowbinary.ticket.period");
             if (StringUtils.isNotBlank(period)) {
                 previewTicketPeriod = DateHelper.parsePeriod(period);
             } else {

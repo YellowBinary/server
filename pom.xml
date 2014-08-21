@@ -11,6 +11,7 @@
         <module>core</module>
         <module>sample</module>
         <module>preview</module>
+        <module>basic_auth</module>
     </modules>
 
     <parent>
@@ -54,23 +55,16 @@
                 <version>${hibernate.version}</version>
             </dependency>
 
-            <!--
-                        <dependency>
-                            <groupId>org.hibernate.common</groupId>
-                            <artifactId>hibernate-commons-annotations</artifactId>
-                            <version>4.0.2.Final</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>net.sf.ehcache</groupId>
-                            <artifactId>ehcache-core</artifactId>
-                            <version>2.4.3</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.hibernate</groupId>
-                            <artifactId>hibernate-ehcache</artifactId>
-                            <version>4.1.12.Final</version>
-                        </dependency>
-            -->
+            <dependency>
+                <groupId>net.sf.ehcache</groupId>
+                <artifactId>ehcache-core</artifactId>
+                <version>2.4.7</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-ehcache</artifactId>
+                <version>4.1.12.Final</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.aspectj</groupId>

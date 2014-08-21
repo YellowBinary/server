@@ -6,14 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import org.yellowbinary.server.core.*;
 import org.yellowbinary.server.core.annotation.CachedAnnotation;
 import org.yellowbinary.server.core.annotation.ReflectionInvoker;
-import org.yellowbinary.server.core.context.Context;
-import org.yellowbinary.server.core.model.content.Block;
 import org.yellowbinary.server.core.model.RootNode;
-import org.yellowbinary.server.core.model.content.Text;
 import org.yellowbinary.server.core.service.EventHandlerService;
 import org.yellowbinary.server.core.stereotypes.Provides;
 
@@ -46,41 +42,8 @@ public class ProvidesEventGenerator {
     }
 
     public <T> T triggerInterceptor(RootNode node, String providesType, String withType, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        Assert.notNull(Context.current(), "Context can't be NULL");
         CachedAnnotation cachedAnnotation = getCachedAnnotationIfModuleIsEnabled(providesType, withType);
-        Context.current().addAttribute(withType, cachedAnnotation.getMethod().getDeclaringClass());
         return ReflectionInvoker.execute(cachedAnnotation, node, withType, args);
-    }
-
-/*
-    public static <T> T triggerInterceptor(Node node, String providesType, String withType, Navigation navigation, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        CachedAnnotation cachedAnnotation = getCachedAnnotationIfModuleIsEnabled(providesType, withType);
-        assert(NodeContext.current() != null);
-        NodeContext.current().attributes.put(withType, cachedAnnotation.method.getDeclaringClass());
-        return ReflectionInvoker.execute(cachedAnnotation, node, withType, navigation, args);
-    }
-
-    public static <T> T triggerInterceptor(Node node, String providesType, String withType, Form form, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        CachedAnnotation cachedAnnotation = getCachedAnnotationIfModuleIsEnabled(providesType, withType);
-        assert(NodeContext.current() != null);
-        NodeContext.current().attributes.put(withType, cachedAnnotation.method.getDeclaringClass());
-        return ReflectionInvoker.execute(cachedAnnotation, node, withType, form, args);
-    }
-
-*/
-
-    public <T> T triggerInterceptor(Node node, String providesType, String withType, Block block, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        CachedAnnotation cachedAnnotation = getCachedAnnotationIfModuleIsEnabled(providesType, withType);
-        assert(Context.current() != null);
-        Context.current().addAttribute(withType, cachedAnnotation.getMethod().getDeclaringClass());
-        return ReflectionInvoker.execute(cachedAnnotation, node, withType, block, args);
-    }
-
-    public <T> T triggerInterceptor(Node node, String providesType, String withType, Text text, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        CachedAnnotation cachedAnnotation = getCachedAnnotationIfModuleIsEnabled(providesType, withType);
-        assert(Context.current() != null);
-        Context.current().addAttribute(withType, cachedAnnotation.getMethod().getDeclaringClass());
-        return ReflectionInvoker.execute(cachedAnnotation, node, withType, text, args);
     }
 
     private CachedAnnotation getCachedAnnotationIfModuleIsEnabled(String providesType, String withType) throws ModuleException {

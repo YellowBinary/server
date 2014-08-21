@@ -31,6 +31,12 @@
             <version>0.1.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.yellowbinary.server</groupId>
+            <artifactId>BasicAuth</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+
         <!-- Spring Framework -->
         <dependency>
             <groupId>org.springframework</groupId>
