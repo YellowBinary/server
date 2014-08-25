@@ -42,7 +42,7 @@ public class CustomSecurityExpressionRoot extends SecurityExpressionRoot impleme
 
     // create a method that will perform the check with
     // the method name transparently for you
-    public boolean hasMethodPermission(Object target, Object permission) {
+    public boolean isAuthorized(Object target, Object permission) {
         boolean result = true;
 
         try {

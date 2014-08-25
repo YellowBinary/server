@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-@PostAuthorize("hasMethodPermission(returnObject,'delete')")
+@PostAuthorize("isAuthorized(returnObject,'delete')")
 public @interface DeleteAccess {
 }

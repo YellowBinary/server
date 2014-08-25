@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-@PostAuthorize("hasMethodPermission(returnObject,'create')")
+@PostAuthorize("isAuthorized(returnObject,'create')")
 public @interface CreateAccess {
 }
