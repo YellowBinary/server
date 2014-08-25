@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.yellowbinary.server.core.*;
 import org.yellowbinary.server.core.dao.BlockDao;
 import org.yellowbinary.server.core.dao.MetaDao;
@@ -45,14 +46,18 @@ public class BlockProvider {
     public void decorateBlock(Node node, String withType, Map<String, Object> args) throws NodeLoadException, ModuleException, NodeNotFoundException {
         Block block = (Block) node;
         if (block != null && !StringUtils.isBlank(block.getReferenceId())) {
-            Node text = nodeService.load(block.getReferenceId());
-            if (text != null) {
-                Meta meta = metaDao.findByKey(node.getKey(), 0, block.getReferenceId());
-                if (meta != null) {
-                    node.addChild(text, meta);
+            try {
+                Node referencedNode = nodeService.load(block.getReferenceId());
+                if (referencedNode != null) {
+                    Meta meta = metaDao.findByKey(referencedNode.getKey(), 0, block.getReferenceId());
+                    if (meta != null) {
+                        referencedNode.addChild(referencedNode, meta);
+                    }
+                    LOG.info("No meta, using default");
+                    node.addChild(referencedNode, Meta.defaultMeta());
                 }
-                LOG.warn("No meta, using default");
-                node.addChild(text, Meta.defaultMeta());
+            } catch (AccessDeniedException e) {
+                LOG.debug(String.format("Access denied for %s", block.getReferenceId()));
             }
         }
 

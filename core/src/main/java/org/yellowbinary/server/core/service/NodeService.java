@@ -6,12 +6,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.yellowbinary.server.core.*;
+import org.yellowbinary.server.core.context.Context;
 import org.yellowbinary.server.core.dao.RootNodeDao;
 import org.yellowbinary.server.core.event.OnLoadEventGenerator;
 import org.yellowbinary.server.core.event.ProvidesEventGenerator;
 import org.yellowbinary.server.core.model.RootNode;
 import org.yellowbinary.server.core.preview.PreviewEventGenerator;
 import org.yellowbinary.server.core.preview.Ticket;
+import org.yellowbinary.server.core.stereotypes.security.ReadAccess;
 
 import java.util.Collections;
 import java.util.Date;
@@ -36,16 +38,14 @@ public class NodeService {
     @Autowired
     private RootNodeDao rootNodeDao;
 
+    @ReadAccess
     public Node load(String identifier) throws NodeNotFoundException, NodeLoadException, ModuleException {
         return load(identifier, 0);
     }
 
+    @ReadAccess
     public Node load(String identifier, int version) throws NodeNotFoundException, NodeLoadException, ModuleException {
-        return loadNode(identifier, version);
-    }
-
-    public Node loadNode(String identifier, int version) throws NodeNotFoundException, NodeLoadException, ModuleException {
-        LOG.trace("Trying to find alias for [" + identifier + "]");
+        LOG.trace(String.format("Trying to find alias for [%s]", identifier));
 
         String key = aliasService.getKeyForPath(identifier);
         return loadByNodeIdAndVersion(key, version);
@@ -62,7 +62,7 @@ public class NodeService {
             throw new NodeNotFoundException(identifier);
         }
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Loaded " + root.toString());
+            LOG.debug(String.format("Loaded %s", root));
         }
 
         return decorateNode(root);
@@ -73,7 +73,7 @@ public class NodeService {
         // Check for a preview ticket and decorateNode the corresponding rootnode
         Ticket ticket = previewEventGenerator.getValidTicket();
         if (ticket != null) {
-            LOG.trace("Preview Ticket found, ignoring version and using preview date of: "+ticket.getPreviewDateTime().toString());
+            LOG.trace(String.format("Preview Ticket found, ignoring version and using preview date of: %s", ticket.getPreviewDateTime()));
             rootNode = rootNodeDao.findByKeyAndPublishedDate(nodeId, ticket.getPreviewDateTime().toDate());
         } else {
             //Load RootNode model

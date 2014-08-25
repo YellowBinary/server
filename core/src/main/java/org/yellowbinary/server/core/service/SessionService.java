@@ -75,9 +75,9 @@ public class SessionService {
 
     public String get(String key) {
         if (isSessionValid()) {
-            String value = getResponse().getHeader(key);
+            String value = getRequest().getHeader(key);
             if (value != null) {
-                return encryptionService.encrypt(value);
+                return encryptionService.decrypt(value);
             }
         }
         return null;

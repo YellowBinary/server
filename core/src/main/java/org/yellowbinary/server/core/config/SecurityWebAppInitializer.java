@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.config;
+package org.yellowbinary.server.core.config;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

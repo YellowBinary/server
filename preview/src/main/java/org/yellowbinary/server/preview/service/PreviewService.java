@@ -5,15 +5,17 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.yellowbinary.server.core.Core;
 import org.yellowbinary.server.core.ModuleException;
 import org.yellowbinary.server.core.NodeLoadException;
 import org.yellowbinary.server.core.context.Context;
 import org.yellowbinary.server.core.dao.ConfigurationDao;
+import org.yellowbinary.server.core.event.ProvidesEventGenerator;
 import org.yellowbinary.server.core.helpers.DateHelper;
 import org.yellowbinary.server.core.security.Security;
 import org.yellowbinary.server.core.service.SessionService;
-import org.yellowbinary.server.core.security.User;
 import org.yellowbinary.server.preview.dao.BasicTicketDao;
 import org.yellowbinary.server.preview.model.BasicTicket;
 
@@ -34,6 +36,9 @@ public class PreviewService {
     @Autowired
     private SessionService sessionService;
 
+    @Autowired
+    private ProvidesEventGenerator providesEventGenerator;
+
     private static Period previewTicketPeriod;
 
     public BasicTicket findWithToken(String token) {
@@ -44,11 +49,11 @@ public class PreviewService {
         }
     }
 
-    public BasicTicket getIfValid(User user, String token) {
-        assert(user != null);
+    public BasicTicket getIfValid(Authentication authentication, String token) {
+        assert(authentication != null);
         BasicTicket basicTicket = findWithToken(token);
         if (basicTicket != null) {
-            if (basicTicket.getUserId().equals(user.getIdentifier()) && isValid(basicTicket)) {
+            if (basicTicket.getUserId().equals(authentication.getPrincipal()) && isValid(basicTicket)) {
                 basicTicket.setValidUntil(updateValidUntil().getMillis());
                 return basicTicket;
             }
@@ -57,12 +62,12 @@ public class PreviewService {
         return null;
     }
 
-    public BasicTicket createInstance(User user, DateTime preview) {
-        assert(user != null);
+    public BasicTicket createInstance(Authentication authentication, DateTime preview) {
+        assert(authentication != null);
         BasicTicket basicTicket = new BasicTicket();
         basicTicket.setValidUntil(updateValidUntil().getMillis());
         basicTicket.setToken(UUID.randomUUID().toString());
-        basicTicket.setUserId(user.getIdentifier());
+        basicTicket.setUserId((String)authentication.getPrincipal());
         basicTicket.setPreview(preview.getMillis());
         return basicTicketDao.save(basicTicket);
     }
@@ -101,9 +106,9 @@ public class PreviewService {
     public BasicTicket getCurrent() throws NodeLoadException, ModuleException {
         String previewToken = sessionService.get(SESSION_PREVIEW_TICKET_KEY);
         if (StringUtils.isNotBlank(previewToken)) {
-            User user = null; //TODO: SecurityEventGenerator.triggerCurrentUserInterceptor();
-            if (user != null) {
-                return getIfValid(user, previewToken);
+            Authentication authentication = providesEventGenerator.triggerInterceptor(null, Core.Base.SECURITY, Security.With.AUTHENTICATION_CURRENT_USER);
+            if (authentication != null) {
+                return getIfValid(authentication, previewToken);
             }
         }
         return null;
@@ -119,9 +124,9 @@ public class PreviewService {
     }
 
     public BasicTicket createNewTicket(DateTime preview) {
-        User user = (User) Context.current().getAttribute(Security.Params.AUTH_USER);
-        if (user != null) {
-            BasicTicket basicTicket = createInstance(user, preview);
+        Authentication authentication = (Authentication) Context.current().getAttribute(Security.Params.AUTH_USER);
+        if (authentication != null) {
+            BasicTicket basicTicket = createInstance(authentication, preview);
             sessionService.set(SESSION_PREVIEW_TICKET_KEY, basicTicket.getToken());
             return basicTicket;
         }

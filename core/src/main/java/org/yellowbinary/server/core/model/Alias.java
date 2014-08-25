@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "alias")
 public class Alias {
 
-    public static final String TYPE = "origo.alias";
+    public static final String TYPE = "yellowbinary.alias";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

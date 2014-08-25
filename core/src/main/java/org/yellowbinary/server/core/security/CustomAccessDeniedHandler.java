@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.security;
+package org.yellowbinary.server.core.security;
 
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;

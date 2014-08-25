@@ -6,6 +6,10 @@ import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.yellowbinary.server.core.InitializationException;
@@ -13,17 +17,18 @@ import org.yellowbinary.server.core.InterceptorRepository;
 import org.yellowbinary.server.core.ModuleRepository;
 import org.yellowbinary.server.core.stereotypes.Interceptor;
 import org.yellowbinary.server.core.stereotypes.Module;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 public class AnnotationProcessor {
@@ -120,10 +125,10 @@ public class AnnotationProcessor {
                     //noinspection unchecked
                     List<Prototype> prototypes = (List<Prototype>) module.getAnnotationsMethod().invoke(module.getBean());
                     for (Prototype prototype : prototypes) {
-                        if (!annotationPrototypes.containsKey(prototype.annotation)) {
-                            annotationPrototypes.put(prototype.annotation, Lists.<Prototype>newArrayList());
+                        if (!annotationPrototypes.containsKey(prototype.getAnnotation())) {
+                            annotationPrototypes.put(prototype.getAnnotation(), Lists.<Prototype>newArrayList());
                         }
-                        List<Prototype> list = annotationPrototypes.get(prototype.annotation);
+                        List<Prototype> list = annotationPrototypes.get(prototype.getAnnotation());
                         list.add(prototype);
                     }
                 }
@@ -140,7 +145,7 @@ public class AnnotationProcessor {
 
     public void scanEventHandlers(CachedModule module, Map<String, Object> beans, Class<? extends Annotation> annotationClass, List<Prototype> prototypes) {
 
-        LOG.trace("- - Processing [" + annotationClass.getSimpleName() + "]");
+        LOG.trace(String.format("- - Processing [%s]", annotationClass.getSimpleName()));
 
         Set<Method> unmatchedMethods = Sets.newHashSet();
 
@@ -183,24 +188,27 @@ public class AnnotationProcessor {
             for (Method m : unmatchedMethods) {
                 for (Prototype prototype : prototypes) {
                     // Check parameters first
-                    Class[] parameterTypes = prototype.expectedParameterTypes;
+                    Class[] parameterTypes = prototype.getExpectedParameterTypes();
                     Class[] pc = m.getParameterTypes();
                     if (pc.length != parameterTypes.length) {
-                        sb.append("Method '").append(m.getDeclaringClass()).append(".").append(m.getName()).append("(").append(StringUtils.join(StringUtils.join(m.getParameterTypes()))).append(")' is annotated with '").append(annotationClass.getName()).append("' but the method does not match the required signature (different amount of parameters)");
+                        sb.append(String.format("Method '%s.%s (%s)' is annotated with '%s' but the method does not match the required signature but the method does not match the required signature but the method does not match the required signature (different amount of parameters)",
+                                m.getDeclaringClass().getName(), m.getName(), StringUtils.join(StringUtils.join(m.getParameterTypes())), annotationClass.getName()));
                         break;
                     }
                     for (int i = 0; i < pc.length; i++) {
                         //noinspection unchecked
                         if (!parameterTypes[i].isAssignableFrom(pc[i])) {
-                            sb.append("Method '").append(m.getDeclaringClass().getName()).append(".").append(m.getName()).append("(").append(StringUtils.join(StringUtils.join(m.getParameterTypes()))).append(")' is annotated with '").append(annotationClass.getName()).append("' but the method does not match the required signature (parameter '").append(parameterTypes[i].getName()).append("' has the wrong type)");
+                            sb.append(String.format("Method '%s.%s (%s)' is annotated with '%s' but the method does not match the required signature but the method does not match the required signature (parameter '%s' has the wrong type)",
+                                    m.getDeclaringClass().getName(), m.getName(), StringUtils.join(StringUtils.join(m.getParameterTypes())), annotationClass.getName(), parameterTypes[i].getName()));
                             break;
                         }
                     }
                     // Parameters match so check return type
-                    Class returnType = prototype.expectedReturnType;
+                    Class returnType = prototype.getExpectedReturnType();
                     //noinspection unchecked
                     if (returnType != null && !returnType.isAssignableFrom(m.getReturnType())) {
-                        sb.append("Method '").append(m.getDeclaringClass().getName()).append(".").append(m.getName()).append("(").append(StringUtils.join(StringUtils.join(m.getParameterTypes()))).append(")' is annotated with '").append(annotationClass.getName()).append("' but the method does not match the required signature (wrong return type, expected [").append(returnType).append("] and found [").append(m.getReturnType()).append("])");
+                        sb.append(String.format("Method '%s.%s (%s)' is annotated with '%s' but the method does not match the required signature (wrong return type, expected [%s] and found [%s])",
+                                m.getDeclaringClass().getName(), m.getName(), StringUtils.join(StringUtils.join(m.getParameterTypes())), annotationClass.getName(), returnType, m.getReturnType()));
                         break;
                     }
                 }
@@ -215,7 +223,7 @@ public class AnnotationProcessor {
 
     private boolean matchPrototype(Prototype prototype, Method m) {
 
-        Class returnType = prototype.expectedReturnType;
+        Class returnType = prototype.getExpectedReturnType();
 
         if (!isParametersMatching(prototype, m)) {
             return false;
@@ -226,13 +234,13 @@ public class AnnotationProcessor {
             return false;
         }
 
-        LOG.trace("- - - Found '" + m.getDeclaringClass().getName() + "." + m.getName() + "'");
+        LOG.trace(String.format("- - - Found '%s.%s'", m.getDeclaringClass().getName(), m.getName()));
 
         return true;
     }
 
     private boolean isParametersMatching(Prototype prototype, Method m) {
-        Class[] expectedParameterTypes = prototype.expectedParameterTypes;
+        Class[] expectedParameterTypes = prototype.getExpectedParameterTypes();
         Class[] pc = m.getParameterTypes();
         if (pc.length != expectedParameterTypes.length) {
             return false;
@@ -249,31 +257,31 @@ public class AnnotationProcessor {
     private void assertModuleDependencies(CachedModule module) {
         try {
             if (module.getDependenciesMethod() == null) {
-                LOG.debug("Module '" + module.getName() + "' has no dependencies");
+                LOG.debug(String.format("Module '%s' has no dependencies", module.getName()));
                 return;
             }
 
-            @SuppressWarnings("unchecked") Collection<Dependency> dependencies = (Collection<Dependency>) module.getDependenciesMethod().invoke(module);
+            @SuppressWarnings("unchecked") Collection<Dependency> dependencies = (Collection<Dependency>) module.getDependenciesMethod().invoke(module.getBean());
 
             for (Dependency dependency : dependencies) {
-                CachedModule provider = moduleRepository.getModule(dependency.name);
+                CachedModule provider = moduleRepository.getModule(dependency.getName());
                 if (provider == null) {
-                    throw new InitializationException("Module '" + module.getName() + "' requires '" + dependency + "' but it is not installed");
+                    throw new InitializationException(String.format("Module '%s' requires '%s' but it is not installed", module.getName(), dependency));
                 }
-                LOG.debug("Module '" + module.getName() + "' requires module '" + dependency + "' ");
-                if (dependency.minimum) {
-                    if (dependency.major < provider.getModuleVersion().major()) {
-                        if (dependency.minor < provider.getModuleVersion().minor()) {
-                            if (dependency.patch < provider.getModuleVersion().patch()) {
-                                throw new InitializationException("Module '" + module.getName() + "' requires '" + dependency + "' but the installed version is " + provider.version());
+                LOG.debug(String.format("Module '%s' requires module '%s' ", module.getName(), dependency));
+                if (dependency.isMinimum()) {
+                    if (dependency.getMajor() < provider.getModuleVersion().major()) {
+                        if (dependency.getMinor() < provider.getModuleVersion().minor()) {
+                            if (dependency.getPatch() < provider.getModuleVersion().patch()) {
+                                throw new InitializationException(String.format("Module '%s' requires '%s' but the installed version is %s", module.getName(), dependency, provider.version()));
                             }
                         }
                     }
                 } else {
-                    if (dependency.major > provider.getModuleVersion().major()) {
-                        if (dependency.minor > provider.getModuleVersion().minor()) {
-                            if (dependency.patch > provider.getModuleVersion().patch()) {
-                                throw new InitializationException("Module '" + module.getName() + "' requires '" + dependency + "' but the installed version is " + provider.version());
+                    if (dependency.getMajor() > provider.getModuleVersion().major()) {
+                        if (dependency.getMinor() > provider.getModuleVersion().minor()) {
+                            if (dependency.getPatch() > provider.getModuleVersion().patch()) {
+                                throw new InitializationException(String.format("Module '%s' requires '%s' but the installed version is %s", module.getName(), dependency, provider.version()));
                             }
                         }
                     }
@@ -302,80 +310,4 @@ public class AnnotationProcessor {
         return sortedModulesClasses;
     }
 
-    public static class Prototype {
-        private final Class<? extends Annotation> annotation;
-        private final Class[] expectedParameterTypes;
-        public final Class expectedReturnType;
-
-        public Prototype(Class<? extends Annotation> annotation, Class expectedReturnType, Class... expectedParameterTypes) {
-            this.annotation = annotation;
-            this.expectedParameterTypes = expectedParameterTypes;
-            this.expectedReturnType = expectedReturnType;
-        }
-
-        public Class<? extends Annotation> getAnnotation() {
-            return annotation;
-        }
-
-        public Class[] getExpectedParameterTypes() {
-            return expectedParameterTypes;
-        }
-
-        public Class getExpectedReturnType() {
-            return expectedReturnType;
-        }
-    }
-
-    public static class Dependency {
-
-        private final String name;
-        private final boolean minimum;
-        private final int major;
-        private final int minor;
-        private final int patch;
-
-        public Dependency(String name, int major, int minor) {
-            this(name, true, major, minor);
-        }
-
-        public Dependency(String name, boolean minimum, int major, int minor) {
-            this(name, minimum, major, minor, 0);
-        }
-
-        public Dependency(String name, boolean minimum, int major, int minor, int patch) {
-            this.name = name;
-            this.minimum = minimum;
-            this.major = major;
-            this.minor = minor;
-            this.patch = patch;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public boolean isMinimum() {
-            return minimum;
-        }
-
-        public int getMajor() {
-            return major;
-        }
-
-        public int getMinor() {
-            return minor;
-        }
-
-        public int getPatch() {
-            return patch;
-        }
-
-        public String toString() {
-            return "Module " + name + " (" + version() + ")";
-        }
-
-        public String version() {
-            return (minimum ? ">=" : "<") + major + (minor != -1 ? "." + minor : "") + (patch != -1 ? "." + patch : "");
-        }
-    }
 }

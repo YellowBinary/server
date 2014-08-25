@@ -7,12 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import org.yellowbinary.server.core.*;
 import org.yellowbinary.server.core.context.Context;
 import org.yellowbinary.server.core.dao.ConfigurationDao;
 import org.yellowbinary.server.core.service.AliasService;
 import org.yellowbinary.server.core.service.NodeService;
+import org.yellowbinary.server.core.stereotypes.security.ReadAccess;
 
 import java.util.Collections;
 import java.util.Map;
@@ -32,6 +34,7 @@ public class NodeController {
     @Autowired
     private AliasService aliasService;
 
+    @ReadAccess
     @RequestMapping("/")
     public Node getNode() throws NodeNotFoundException, NodeLoadException, ModuleException {
 
@@ -39,16 +42,17 @@ public class NodeController {
         return nodeService.load(startPageId);
     }
 
+    @ReadAccess
     @RequestMapping("/{key}")
     public Node getNode(@PathVariable String key) throws NodeNotFoundException, NodeLoadException, ModuleException {
         return nodeService.load(key, 0);
     }
 
+    @ReadAccess
     @RequestMapping("/{key}/{version}")
     public Node getNode(@PathVariable String key, @PathVariable Integer version) throws NodeNotFoundException, NodeLoadException, ModuleException {
         return nodeService.load(key, version);
     }
-
 
     @ExceptionHandler(NodeNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -83,6 +87,25 @@ public class NodeController {
         LOG.warn("Using fallback error handling, sending 501 with no content");
         return Collections.emptyMap();
     }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public Map<String, String> handleAccessDenied(AccessDeniedException exception) {
+        String message = "Error loading node: " + exception.getMessage();
+        LOG.info(message, exception);
+
+        String internalServerErrorPage = configurationDao.readValue(String.class, Core.Settings.INTERNAL_SERVER_ERROR_PAGE);
+        String url = aliasService.getAliasForKey(internalServerErrorPage, "error");
+
+        if (Context.current().getAttribute("error") == null) {
+            Context.current().addAttribute("error", Boolean.TRUE);
+            LOG.debug("Sending reference to Internal-Server-Error Page");
+            return createResultMap(null, url, message);
+        }
+        LOG.warn("Using fallback error handling, sending 501 with no content");
+        return Collections.emptyMap();
+    }
+
 
     private Map<String, String> createResultMap(String key, String reference, String message) {
         Map<String, String> result = Maps.newHashMap();

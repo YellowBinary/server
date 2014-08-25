@@ -52,6 +52,7 @@ public class ModuleRepository {
         if (methods.size() == 1) {
             return methods.iterator().next();
         }
+        LOG.warn(String.format("More than one %s annotation in class %s, skipping", annotation.getClass().getSimpleName(), c.getSimpleName()));
         return null;
     }
 

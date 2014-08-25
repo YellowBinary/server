@@ -2,11 +2,26 @@ package org.yellowbinary.server.sample;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.yellowbinary.server.basic_auth.dao.BasicAuthorizationDao;
+import org.yellowbinary.server.basic_auth.dao.BasicRoleDao;
+import org.yellowbinary.server.basic_auth.dao.BasicUserDao;
+import org.yellowbinary.server.basic_auth.model.BasicAuthorization;
+import org.yellowbinary.server.basic_auth.model.BasicRole;
+import org.yellowbinary.server.basic_auth.model.BasicUser;
 import org.yellowbinary.server.core.Core;
 import org.yellowbinary.server.core.State;
-import org.yellowbinary.server.core.dao.*;
-import org.yellowbinary.server.core.model.*;
+import org.yellowbinary.server.core.dao.AliasDao;
+import org.yellowbinary.server.core.dao.BasicPageDao;
+import org.yellowbinary.server.core.dao.BlockDao;
+import org.yellowbinary.server.core.dao.ConfigurationDao;
+import org.yellowbinary.server.core.dao.MetaDao;
+import org.yellowbinary.server.core.dao.ReleaseDao;
+import org.yellowbinary.server.core.dao.RootNodeDao;
+import org.yellowbinary.server.core.dao.TextDao;
 import org.yellowbinary.server.core.model.Alias;
+import org.yellowbinary.server.core.model.Component;
+import org.yellowbinary.server.core.model.Release;
+import org.yellowbinary.server.core.model.RootNode;
 import org.yellowbinary.server.core.model.content.BasicPage;
 import org.yellowbinary.server.core.model.content.Block;
 import org.yellowbinary.server.core.model.Meta;
@@ -43,6 +58,17 @@ public class SampleDataFixtures {
     @Autowired
     private BlockDao blockDao;
 
+    @Autowired
+    private BasicUserDao basicUserDao;
+
+    @Autowired
+    private BasicRoleDao basicRoleDao;
+
+    @Autowired
+    private BasicAuthorizationDao basicAuthorizationDao;
+
+    private String page1Text;
+
     public void create() {
         if (configurationDao.readValue(Boolean.class, Core.Settings.BASE_URL) == null) {
             createSettings();
@@ -55,9 +81,10 @@ public class SampleDataFixtures {
             createPage7();
             createPage8();
             createPage9();
+
+            createUsersAndRoles();
 /*
             createNavigation();
-            createUsersAndRoles();
 */
         }
     }
@@ -82,6 +109,8 @@ public class SampleDataFixtures {
         Release release1 = getOrCreateRelease("First Release");
         Release release2 = getOrCreateRelease("Second Release");
 
+        page1Text = UUID.randomUUID().toString();
+
         BasicPage page = createPage(
                 createRootNode(BasicPage.TYPE, "2c36c55dd-956e-4b78-18c4-eef7e56aa17", 1),
                 "Start Page",
@@ -90,7 +119,7 @@ public class SampleDataFixtures {
                                 "Bam loo blong woogle bleebing rakity flakity crongle quabbleflup? Duh blap twaddle? Hum bam weeble flip tangity flapping flub blingdubba? Nip bam tingleingle ho doo kanoodle, zap shnozzy hum cringle boo. " +
                                         "\"Dee yada ho?\" blo wheezeryada. Dubbaloo-dangely-dang! \"Yip bananarama yip?\" flop Chef. Flong kanoodle blab roo blab gobble blob hum goblin.")),
                 createBlock(createRootNode(Block.TYPE, UUID.randomUUID().toString(), 0),
-                        createText(createRootNode(Text.TYPE, UUID.randomUUID().toString(), 0),
+                        createText(createRootNode(Text.TYPE, page1Text, 0),
                                 "Version 1: Bam loo blong woogle bleebing rakity flakity crongle quabbleflup? Duh blap twaddle? Hum bam weeble flip tangity flapping flub blingdubba? Nip bam tingleingle ho doo kanoodle, zap shnozzy hum cringle boo. " +
                                         "\"Dee yada ho?\" blo wheezeryada. Dubbaloo-dangely-dang! \"Yip bananarama yip?\" flop Chef. Flong kanoodle blab roo blab gobble blob hum goblin." +
                                         "Yip dee doof blong sloppy flabbing blob wooglezangle? Razz boo blaoodle, \"flong dee zap izzle,\" zap flob blab doof roo wibble-zang...boo dee ho! Hizzle ha weeble hizzy. Bam blipping blippity zupping doo blup zap oodely zingwobble. " +
@@ -493,46 +522,49 @@ public class SampleDataFixtures {
     }
 */
 
-/*
     private void createUsersAndRoles() {
         BasicRole simpleRole = new BasicRole();
-        simpleRole.name = "Normal";
-        simpleRole.create();
-
-        BasicUser basicUser = new BasicUser();
-        basicUser.roles.add(simpleRole);
-        basicUser.email = "user@email.com";
-        basicUser.password = "password";
-        basicUser.create();
+        simpleRole.setName("Normal");
+        basicRoleDao.save(simpleRole);
 
         BasicRole adminRole = new BasicRole();
-        adminRole.name = "Admin";
-        adminRole.create();
+        adminRole.setName("Admin");
+        basicRoleDao.save(adminRole);
+
+        BasicUser basicUser = new BasicUser();
+        basicUser.getRoles().add(simpleRole);
+        basicUser.setEmail("user@email.com");
+        basicUser.setPassword("password");
+        basicUserDao.save(basicUser);
 
         BasicUser adminUser = new BasicUser();
-        adminUser.roles.add(simpleRole);
-        adminUser.roles.add(adminRole);
-        adminUser.email = "admin@email.com";
-        adminUser.password = "password";
-        adminUser.create();
+        adminUser.getRoles().add(simpleRole);
+        adminUser.getRoles().add(adminRole);
+        adminUser.setEmail("admin@email.com");
+        adminUser.setPassword("password");
+        basicUserDao.save(adminUser);
 
         BasicAuthorization adminAuthorization = new BasicAuthorization();
-        adminAuthorization.path = "/admin";
-        adminAuthorization.roles = Sets.newHashSet("Admin");
-        adminAuthorization.create();
+        adminAuthorization.setKey("/admin");
+        adminAuthorization.getRoles().add("Admin");
+        basicAuthorizationDao.save(adminAuthorization);
 
         BasicAuthorization previewAuthorization = new BasicAuthorization();
-        previewAuthorization.path = "/preview";
-        previewAuthorization.roles = Sets.newHashSet("Admin");
-        previewAuthorization.create();
+        previewAuthorization.setKey("/preview");
+        previewAuthorization.getRoles().add("Admin");
+        basicAuthorizationDao.save(previewAuthorization);
 
         BasicAuthorization testAuthorization = new BasicAuthorization();
-        testAuthorization.path = "699eb321-7545-4b27-8a7f-94a4442d2046"; // Page 5
-        testAuthorization.roles = Sets.newHashSet("!Admin", "Normal");
-        testAuthorization.create();
+        testAuthorization.setKey("699eb321-7545-4b27-8a7f-94a4442d2046"); // Page 5
+        testAuthorization.getRoles().add("Normal");
+        basicAuthorizationDao.save(testAuthorization);
+
+        BasicAuthorization page1TextAuthorization = new BasicAuthorization();
+        page1TextAuthorization.setKey(page1Text); // Text on page 1
+        page1TextAuthorization.getRoles().add("Normal");
+        basicAuthorizationDao.save(page1TextAuthorization);
 
     }
-*/
 
     private RootNode createRootNode(String type, String nodeId, int version) {
         RootNode node = new RootNode(nodeId, version);

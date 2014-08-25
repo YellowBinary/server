@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.security;
+package org.yellowbinary.server.core.security;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.GenericFilterBean;
-import org.yellowbinary.server.core.service.EncryptionService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -21,8 +20,6 @@ public class HeaderAuthenticationFilter extends GenericFilterBean {
     private UserDetailsService userDetailsService;
 
     private HeaderAuthenticationUtil headerAuthenticationUtil;
-
-    private EncryptionService encryptionService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
@@ -58,7 +55,7 @@ public class HeaderAuthenticationFilter extends GenericFilterBean {
         String userName = headerAuthenticationUtil.getUserName();
 
         return userName != null
-                ? userDetailsService.loadUserByUsername(encryptionService.decrypt(userName))
+                ? userDetailsService.loadUserByUsername(userName)
                 : null;
     }
 
@@ -72,8 +69,4 @@ public class HeaderAuthenticationFilter extends GenericFilterBean {
         return this;
     }
 
-    public HeaderAuthenticationFilter encryptionService(EncryptionService encryptionService) {
-        this.encryptionService = encryptionService;
-        return this;
-    }
 }

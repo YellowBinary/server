@@ -1,11 +1,10 @@
-package org.yellowbinary.server.basic_auth.security;
+package org.yellowbinary.server.core.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.yellowbinary.server.core.security.Security;
 import org.yellowbinary.server.core.service.EncryptionService;
 import org.yellowbinary.server.core.service.SessionService;
 

@@ -5,9 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.yellowbinary.server.core.Core;
 import org.yellowbinary.server.core.dao.AliasDao;
-import org.yellowbinary.server.core.dao.ConfigurationDao;
 import org.yellowbinary.server.core.model.Alias;
 
 import java.util.List;
@@ -18,14 +16,10 @@ public class AliasService {
     private static final Logger LOG = LoggerFactory.getLogger(AliasService.class);
 
     @Autowired
-    private ConfigurationDao configurationDao;
-
-    @Autowired
     private AliasDao aliasDao;
 
     public String getAliasForKey(String key, String fallback) {
         List<Alias> aliases = aliasDao.findByNode(key);
-        String base = configurationDao.readValue(String.class, Core.Settings.BASE_URL);
 
         String partialUrl;
         // If multiple aliases are defined we use the first one
@@ -37,11 +31,10 @@ public class AliasService {
             partialUrl = fallback;
         }
 
-        if (StringUtils.isNotBlank(base)) {
-            return base + fallback;
-        } else {
+        if (StringUtils.isNotBlank(partialUrl)) {
             return partialUrl;
         }
+        return partialUrl;
     }
 
     public String getKeyForPath(String identifier) {

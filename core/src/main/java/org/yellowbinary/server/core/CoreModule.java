@@ -2,7 +2,7 @@ package org.yellowbinary.server.core;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.yellowbinary.server.core.annotation.AnnotationProcessor;
+import org.yellowbinary.server.core.annotation.Prototype;
 import org.yellowbinary.server.core.dao.ConfigurationDao;
 import org.yellowbinary.server.core.model.RootNode;
 import org.yellowbinary.server.core.stereotypes.Module;
@@ -33,14 +33,14 @@ public class CoreModule {
     }
 
     @Module.Annotations
-    public List<AnnotationProcessor.Prototype> annotations() {
-        List<AnnotationProcessor.Prototype> annotations = Lists.newArrayList();
+    public List<Prototype> annotations() {
+        List<Prototype> annotations = Lists.newArrayList();
 
         // Basic types
-        annotations.add(new AnnotationProcessor.Prototype(Provides.class, Object.class, RootNode.class, String.class));
-        annotations.add(new AnnotationProcessor.Prototype(Provides.class, Object.class, RootNode.class, String.class, Map.class));
-        annotations.add(new AnnotationProcessor.Prototype(Provides.class, Object.class, Node.class, String.class));
-        annotations.add(new AnnotationProcessor.Prototype(Provides.class, Object.class, Node.class, String.class, Map.class));
+        annotations.add(new Prototype(Provides.class, Object.class, RootNode.class, String.class));
+        annotations.add(new Prototype(Provides.class, Object.class, RootNode.class, String.class, Map.class));
+        annotations.add(new Prototype(Provides.class, Object.class, Node.class, String.class));
+        annotations.add(new Prototype(Provides.class, Object.class, Node.class, String.class, Map.class));
 
 /*
         annotations.add(new AnnotationProcessor.Prototype(Provides.class, Object.class, Node.class, String.class, Form.class));
@@ -51,10 +51,10 @@ public class CoreModule {
         annotations.add(new AnnotationProcessor.Prototype(Provides.class, Object.class, Node.class, String.class, Block.class, Map.class));
 */
 
-        annotations.add(new AnnotationProcessor.Prototype(OnLoad.class, null, Node.class));
-        annotations.add(new AnnotationProcessor.Prototype(OnLoad.class, null, Node.class, Map.class));
-        annotations.add(new AnnotationProcessor.Prototype(OnLoad.class, null, Node.class, String.class));
-        annotations.add(new AnnotationProcessor.Prototype(OnLoad.class, null, Node.class, String.class, Map.class));
+        annotations.add(new Prototype(OnLoad.class, null, Node.class));
+        annotations.add(new Prototype(OnLoad.class, null, Node.class, Map.class));
+        annotations.add(new Prototype(OnLoad.class, null, Node.class, String.class));
+        annotations.add(new Prototype(OnLoad.class, null, Node.class, String.class, Map.class));
 
 /*
         annotations.add(new AnnotationProcessor.Prototype(OnLoad.class, null, Node.class, String.class, Navigation.class));

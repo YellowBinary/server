@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.security;
+package org.yellowbinary.server.core.security;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.yellowbinary.server.core.dao.ConfigurationDao;
-import org.yellowbinary.server.core.security.Security;
 import org.yellowbinary.server.core.service.SessionService;
 
 import javax.annotation.PostConstruct;

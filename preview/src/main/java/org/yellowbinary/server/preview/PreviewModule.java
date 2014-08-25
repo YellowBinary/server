@@ -1,7 +1,7 @@
 package org.yellowbinary.server.preview;
 
 import org.yellowbinary.server.core.CoreModule;
-import org.yellowbinary.server.core.annotation.AnnotationProcessor;
+import org.yellowbinary.server.core.annotation.Dependency;
 import org.yellowbinary.server.core.stereotypes.Module;
 
 import java.util.Collections;
@@ -14,8 +14,8 @@ public class PreviewModule {
     public static final String NAME = "yellowbinary.preview";
 
     @Module.Dependencies
-    public static List<AnnotationProcessor.Dependency> dependencies() {
-        return Collections.singletonList(new AnnotationProcessor.Dependency(CoreModule.NAME, 0, 1));
+    public static List<Dependency> dependencies() {
+        return Collections.singletonList(new Dependency(CoreModule.NAME, 0, 1));
     }
 
 }
