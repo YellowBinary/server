@@ -11,7 +11,7 @@
         <module>core</module>
         <module>sample</module>
         <module>preview</module>
-        <module>basic_auth</module>
+        <module>basic_security</module>
     </modules>
 
     <parent>

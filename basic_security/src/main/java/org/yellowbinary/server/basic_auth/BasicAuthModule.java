@@ -11,7 +11,7 @@ import java.util.List;
 @Module.Version(major = 0, minor = 1, patch = 0)
 public class BasicAuthModule {
 
-    public static final String NAME = "yellowbinary.basic_auth";
+    public static final String NAME = "yellowbinary.basic_security";
 
     @Module.Dependencies
     public List<Dependency> dependencies() {
