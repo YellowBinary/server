@@ -55,19 +55,23 @@ public class BasicPage extends AbstractNode {
         return this;
     }
 
+    @Override
     public String getKey() {
         return this.key;
     }
 
+    @Override
     public Node setKey(String key) {
         this.key = key;
         return this;
     }
 
+    @Override
     public String getType() {
         return TYPE;
     }
 
+    @Override
     public Node setType(String type) {
         return this;
     }
@@ -97,6 +101,11 @@ public class BasicPage extends AbstractNode {
     public Node setBlocks(Set<String> blocks) {
         this.blocks = blocks;
         return this;
+    }
+
+    @Override
+    public boolean isChildrenAllowed() {
+        return true;
     }
 
     @Override

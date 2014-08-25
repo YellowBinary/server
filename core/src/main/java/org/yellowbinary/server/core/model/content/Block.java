@@ -38,19 +38,23 @@ public class Block extends AbstractNode {
         this.id = id;
     }
 
+    @Override
     public String getKey() {
         return key;
     }
 
+    @Override
     public Node setKey(String key) {
         this.key = key;
         return this;
     }
 
+    @Override
     public String getType() {
         return type;
     }
 
+    @Override
     public Node setType(String type) {
         this.type = type;
         return this;
@@ -62,6 +66,11 @@ public class Block extends AbstractNode {
 
     public void setReferenceId(String referenceId) {
         this.referenceId = referenceId;
+    }
+
+    @Override
+    public boolean isChildrenAllowed() {
+        return true;
     }
 
     @Override

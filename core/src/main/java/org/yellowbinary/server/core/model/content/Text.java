@@ -46,10 +46,12 @@ public class Text extends AbstractNode {
         this.id = id;
     }
 
+    @Override
     public String getKey() {
         return key;
     }
 
+    @Override
     public Node setKey(String key) {
         this.key = key;
         return this;
@@ -71,6 +73,11 @@ public class Text extends AbstractNode {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public boolean isChildrenAllowed() {
+        return false;
     }
 
     @Override

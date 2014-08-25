@@ -92,4 +92,9 @@ public interface Node {
      */
     boolean hasChildren();
 
+    /**
+     * Whether this type of node allows children.
+     * @return true if allowed
+     */
+    boolean isChildrenAllowed();
 }
