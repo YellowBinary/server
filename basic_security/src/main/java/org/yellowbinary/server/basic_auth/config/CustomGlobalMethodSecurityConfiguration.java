@@ -11,10 +11,10 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 public class CustomGlobalMethodSecurityConfiguration extends GlobalMethodSecurityConfiguration {
 
     @Autowired
-    private MethodSecurityExpressionHandler methodSecurityExpressionHandler;
+    private CustomMethodSecurityExpressionHandler expressionHandler;
 
     @Override
     protected MethodSecurityExpressionHandler createExpressionHandler() {
-        return methodSecurityExpressionHandler;
+        return expressionHandler;
     }
 }

@@ -19,7 +19,6 @@ import org.yellowbinary.server.core.dao.ReleaseDao;
 import org.yellowbinary.server.core.dao.RootNodeDao;
 import org.yellowbinary.server.core.dao.TextDao;
 import org.yellowbinary.server.core.model.Alias;
-import org.yellowbinary.server.core.model.Component;
 import org.yellowbinary.server.core.model.Release;
 import org.yellowbinary.server.core.model.RootNode;
 import org.yellowbinary.server.core.model.content.BasicPage;
@@ -83,6 +82,7 @@ public class SampleDataFixtures {
             createPage9();
 
             createUsersAndRoles();
+
 /*
             createNavigation();
 */
@@ -615,7 +615,7 @@ public class SampleDataFixtures {
         Block block = new Block();
         block.setKey(rootNode.getKey());
         block.setReferenceId(text.getKey());
-        block.setType(Text.TYPE);
+        block.setType(Block.TYPE);
         return blockDao.save(block);
     }
 
@@ -624,7 +624,7 @@ public class SampleDataFixtures {
         Block block = new Block();
         block.setKey(UUID.randomUUID().toString());
         block.setReferenceId(identifier);
-        block.setType(Component.TYPE);
+        block.setType(Block.TYPE);
 
         return blockDao.save(block);
     }

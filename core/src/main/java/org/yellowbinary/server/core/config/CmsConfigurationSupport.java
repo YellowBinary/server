@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories
-@ComponentScan(basePackages = {"org.yellowbinary.core"})
-public class DelegatingCmsConfiguration {
+@EnableJpaRepositories("org.yellowbinary.server.core.dao")
+@ComponentScan("org.yellowbinary.server.core")
+public class CmsConfigurationSupport {
 }

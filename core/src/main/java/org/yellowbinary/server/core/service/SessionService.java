@@ -30,6 +30,7 @@ public class SessionService {
 
     @PostConstruct
     public void register() {
+/*
         String maxAge = configurationDao.readValue(String.class, "application.session.maxAge", "30m");
         sessionMaxAge = DateHelper.parsePeriod(maxAge);
         LOG.debug("Session maxAge is: " +
@@ -37,6 +38,7 @@ public class SessionService {
                         formatIfNotZero(sessionMaxAge.getHours(), "hours", "hour") +
                         formatIfNotZero(sessionMaxAge.getMinutes(), "minutes", "minute")
         );
+*/
     }
 
     public void validateAndUpdateTimestamp() {

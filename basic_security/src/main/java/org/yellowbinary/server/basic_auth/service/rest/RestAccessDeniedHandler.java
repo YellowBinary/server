@@ -1,4 +1,4 @@
-package org.yellowbinary.server.core.security;
+package org.yellowbinary.server.basic_auth.service.rest;
 
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
     private static final String ACCESS_DENIED_JSON = "{\"message\":\"You are not privileged to request this resource.\", \"access-denied\":true,\"cause\":\"AUTHORIZATION_FAILURE\"}";
 

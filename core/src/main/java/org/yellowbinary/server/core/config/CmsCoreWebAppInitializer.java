@@ -13,7 +13,7 @@ import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 
 @Configuration
-public class MyWebAppInitializer implements WebApplicationInitializer, ServletContextInitializer {
+public class CmsCoreWebAppInitializer implements WebApplicationInitializer, ServletContextInitializer {
 
     @Autowired
     private SessionService sessionService;
@@ -46,5 +46,6 @@ public class MyWebAppInitializer implements WebApplicationInitializer, ServletCo
     private void addLoggingFilter(ServletContext container) {
         container.addFilter("loggingFilter", new CommonsRequestLoggingFilter()).addMappingForUrlPatterns(null, true, "/*");
     }
+
 
 }

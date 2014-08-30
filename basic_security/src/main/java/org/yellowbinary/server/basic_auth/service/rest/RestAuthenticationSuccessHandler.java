@@ -1,10 +1,12 @@
-package org.yellowbinary.server.core.security;
+package org.yellowbinary.server.basic_auth.service.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.yellowbinary.server.basic_auth.service.HeaderAuthenticationUtil;
+import org.yellowbinary.server.core.security.Security;
 import org.yellowbinary.server.core.service.EncryptionService;
 import org.yellowbinary.server.core.service.SessionService;
 
@@ -14,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private HeaderAuthenticationUtil headerAuthenticationUtil;
 
@@ -40,17 +42,17 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         clearAuthenticationAttributes(request);
     }
 
-    public CustomAuthenticationSuccessHandler headerUtil(HeaderAuthenticationUtil headerAuthenticationUtil) {
+    public RestAuthenticationSuccessHandler headerUtil(HeaderAuthenticationUtil headerAuthenticationUtil) {
         this.headerAuthenticationUtil = headerAuthenticationUtil;
         return this;
     }
 
-    public CustomAuthenticationSuccessHandler encryptionService(EncryptionService encryptionService) {
+    public RestAuthenticationSuccessHandler encryptionService(EncryptionService encryptionService) {
         this.encryptionService = encryptionService;
         return this;
     }
 
-    public CustomAuthenticationSuccessHandler sessionService(SessionService sessionService) {
+    public RestAuthenticationSuccessHandler sessionService(SessionService sessionService) {
         this.sessionService = sessionService;
         return this;
     }

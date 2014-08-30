@@ -43,6 +43,7 @@ public class EncryptionService {
 
     @PostConstruct
     public void init() {
+/*
         encryptionEnabled = configurationDao.readValue(Boolean.class, "application.session.maxAge", true);
         applicationSecret = env.getProperty("application.secret");
         if (encryptionEnabled && StringUtils.isBlank(applicationSecret)) {
@@ -51,6 +52,7 @@ public class EncryptionService {
         }
 
         LOG.debug("Encryption is " + BooleanUtils.toStringOnOff(encryptionEnabled));
+*/
 
     }
 

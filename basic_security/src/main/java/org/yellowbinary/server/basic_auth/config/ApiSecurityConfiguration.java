@@ -1,34 +1,39 @@
 package org.yellowbinary.server.basic_auth.config;
 
-import org.jasypt.encryption.pbe.PBEStringEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.jasypt.hibernate4.encryptor.HibernatePBEEncryptorRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.core.env.Environment;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
+import org.springframework.web.accept.ContentNegotiationStrategy;
+import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 import org.yellowbinary.server.basic_auth.service.BasicUserDetailsService;
-import org.yellowbinary.server.core.security.CustomAccessDeniedHandler;
-import org.yellowbinary.server.core.security.CustomAuthenticationEntryPoint;
-import org.yellowbinary.server.core.security.CustomAuthenticationSuccessHandler;
-import org.yellowbinary.server.core.security.HeaderAuthenticationFilter;
-import org.yellowbinary.server.core.security.HeaderAuthenticationUtil;
+import org.yellowbinary.server.basic_auth.service.HeaderAuthenticationFilter;
+import org.yellowbinary.server.basic_auth.service.HeaderAuthenticationUtil;
+import org.yellowbinary.server.basic_auth.service.rest.RestAccessDeniedHandler;
+import org.yellowbinary.server.basic_auth.service.rest.RestAuthenticationEntryPoint;
+import org.yellowbinary.server.basic_auth.service.rest.RestAuthenticationSuccessHandler;
 import org.yellowbinary.server.core.service.EncryptionService;
 import org.yellowbinary.server.core.service.SessionService;
 
 import javax.servlet.Filter;
 
+/**
+* Created by jens on 28/08/14.
+*/
 @Configuration
-@Import(CustomGlobalMethodSecurityConfiguration.class)
-public class BasicSecurityConfiguration extends WebSecurityConfigurerAdapter {
+@Order(1)
+public class ApiSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private BasicUserDetailsService userDetailsService;
 
     @Autowired
     private HeaderAuthenticationUtil headerAuthenticationUtil;
@@ -39,51 +44,33 @@ public class BasicSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private SessionService sessionService;
 
-    @Autowired
-    private BasicUserDetailsService userDetailsService;
-
-    @Autowired
-    private Environment env;
-
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-        String applicationSecret = env.getProperty("application.secret");
-
-        PBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-        encryptor.setPassword(applicationSecret);
-        HibernatePBEEncryptorRegistry registry = HibernatePBEEncryptorRegistry.getInstance();
-        registry.registerPBEStringEncryptor("stringEncryptor", encryptor);
-
-
-        auth.userDetailsService(userDetailsService);
-/*
-
-        auth.inMemoryAuthentication().
-
-                withUser("user").password("password").roles("USER").
-
-                and().
-
-                withUser("admin").password("password").roles("USER", "ADMIN");
-*/
+    public UserDetailsService userDetailsServiceBean() throws Exception {
+        return userDetailsService;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        ContentNegotiationStrategy negotiationStrategy = new HeaderContentNegotiationStrategy();
+
         http.
+                userDetailsService(userDetailsServiceBean()).
+                requestMatcher(new MediaTypeRequestMatcher(negotiationStrategy, MediaType.APPLICATION_JSON)).
+
+                antMatcher("/api/**/*").
+
                 addFilterBefore(authenticationFilter(userDetailsService()), LogoutFilter.class).
 
                 csrf().disable().
 
                 formLogin().successHandler(successHandler()).
-                loginProcessingUrl("/login").
+                loginProcessingUrl("/api/login").
 
                 and().
 
                 logout().
-                logoutSuccessUrl("/logout").
+                logoutSuccessUrl("/api/logout").
 
                 and().
 
@@ -92,21 +79,20 @@ public class BasicSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 and().
 
                 exceptionHandling().
-                accessDeniedHandler(new CustomAccessDeniedHandler()).
-                authenticationEntryPoint(new CustomAuthenticationEntryPoint()).
+                accessDeniedHandler(new RestAccessDeniedHandler()).
+                authenticationEntryPoint(new RestAuthenticationEntryPoint()).
 
                 and().
 
                 authorizeRequests().
 
-                antMatchers(HttpMethod.POST, "/login").permitAll().
-                antMatchers(HttpMethod.POST, "/logout").authenticated().
+                antMatchers(HttpMethod.POST, "/api/login").permitAll().
+                antMatchers(HttpMethod.POST, "/api/logout").authenticated().
                 anyRequest().permitAll();
-
     }
 
     protected AuthenticationSuccessHandler successHandler() {
-        return new CustomAuthenticationSuccessHandler().
+        return new RestAuthenticationSuccessHandler().
                 encryptionService(encryptionService).
                 headerUtil(headerAuthenticationUtil).
                 sessionService(sessionService);
