@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.model;
+package org.yellowbinary.server.basic_security.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

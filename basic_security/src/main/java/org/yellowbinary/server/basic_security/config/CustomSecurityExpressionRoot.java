@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.config;
+package org.yellowbinary.server.basic_security.config;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -7,9 +7,9 @@ import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.acls.domain.IdentityUnavailableException;
 import org.springframework.security.core.Authentication;
-import org.yellowbinary.server.basic_auth.dao.BasicAuthorizationDao;
-import org.yellowbinary.server.basic_auth.model.BasicAuthorization;
-import org.yellowbinary.server.basic_auth.model.NodeKey;
+import org.yellowbinary.server.basic_security.dao.BasicAuthorizationDao;
+import org.yellowbinary.server.basic_security.model.BasicAuthorization;
+import org.yellowbinary.server.basic_security.model.NodeKey;
 import org.yellowbinary.server.core.service.AliasService;
 
 import java.lang.reflect.Method;

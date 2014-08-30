@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth;
+package org.yellowbinary.server.basic_security;
 
 import org.yellowbinary.server.core.CoreModule;
 import org.yellowbinary.server.core.annotation.Dependency;

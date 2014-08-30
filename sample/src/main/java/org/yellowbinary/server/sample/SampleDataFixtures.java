@@ -2,12 +2,12 @@ package org.yellowbinary.server.sample;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.yellowbinary.server.basic_auth.dao.BasicAuthorizationDao;
-import org.yellowbinary.server.basic_auth.dao.BasicRoleDao;
-import org.yellowbinary.server.basic_auth.dao.BasicUserDao;
-import org.yellowbinary.server.basic_auth.model.BasicAuthorization;
-import org.yellowbinary.server.basic_auth.model.BasicRole;
-import org.yellowbinary.server.basic_auth.model.BasicUser;
+import org.yellowbinary.server.basic_security.dao.BasicAuthorizationDao;
+import org.yellowbinary.server.basic_security.dao.BasicRoleDao;
+import org.yellowbinary.server.basic_security.dao.BasicUserDao;
+import org.yellowbinary.server.basic_security.model.BasicAuthorization;
+import org.yellowbinary.server.basic_security.model.BasicRole;
+import org.yellowbinary.server.basic_security.model.BasicUser;
 import org.yellowbinary.server.core.Core;
 import org.yellowbinary.server.core.State;
 import org.yellowbinary.server.core.dao.AliasDao;

@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.config;
+package org.yellowbinary.server.basic_security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
-import org.yellowbinary.server.basic_auth.service.BasicUserDetailsService;
+import org.yellowbinary.server.basic_security.service.BasicUserDetailsService;
 
 import java.util.Collections;
 

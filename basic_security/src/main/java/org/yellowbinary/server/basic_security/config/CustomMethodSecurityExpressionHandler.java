@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.config;
+package org.yellowbinary.server.basic_security.config;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,7 @@ import org.springframework.security.access.expression.method.MethodSecurityExpre
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.yellowbinary.server.basic_auth.dao.BasicAuthorizationDao;
+import org.yellowbinary.server.basic_security.dao.BasicAuthorizationDao;
 import org.yellowbinary.server.core.service.AliasService;
 
 @Component

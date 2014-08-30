@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.config;
+package org.yellowbinary.server.basic_security.config;
 
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;

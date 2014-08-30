@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.service;
+package org.yellowbinary.server.basic_security.service;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
@@ -10,11 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.yellowbinary.server.basic_auth.dao.BasicAuthorizationDao;
-import org.yellowbinary.server.basic_auth.dao.BasicUserDao;
-import org.yellowbinary.server.basic_auth.model.BasicAuthorization;
-import org.yellowbinary.server.basic_auth.model.BasicRole;
-import org.yellowbinary.server.basic_auth.model.BasicUser;
+import org.yellowbinary.server.basic_security.dao.BasicAuthorizationDao;
+import org.yellowbinary.server.basic_security.dao.BasicUserDao;
+import org.yellowbinary.server.basic_security.model.BasicAuthorization;
+import org.yellowbinary.server.basic_security.model.BasicRole;
+import org.yellowbinary.server.basic_security.model.BasicUser;
 import org.yellowbinary.server.core.dao.AliasDao;
 import org.yellowbinary.server.core.model.Alias;
 

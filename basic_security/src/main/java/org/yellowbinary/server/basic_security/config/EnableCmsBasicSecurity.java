@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.config;
+package org.yellowbinary.server.basic_security.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Documented
 @EnableWebMvcSecurity
 @Import({CmsBasicSecurityConfiguration.class, ApiSecurityConfiguration.class, WebSecurityConfiguration.class})
-@ComponentScan("org.yellowbinary.server.basic_auth")
-@EnableJpaRepositories("org.yellowbinary.server.basic_auth.dao")
+@ComponentScan("org.yellowbinary.server.basic_security")
+@EnableJpaRepositories("org.yellowbinary.server.basic_security.dao")
 public @interface EnableCmsBasicSecurity {
 }

@@ -1,10 +1,10 @@
-package org.yellowbinary.server.basic_auth.dao;
+package org.yellowbinary.server.basic_security.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.yellowbinary.server.basic_auth.model.BasicAuthorization;
+import org.yellowbinary.server.basic_security.model.BasicAuthorization;
 
 @Repository
 @Transactional

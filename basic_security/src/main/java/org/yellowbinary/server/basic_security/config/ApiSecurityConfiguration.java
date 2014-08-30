@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.config;
+package org.yellowbinary.server.basic_security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -14,12 +14,12 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
-import org.yellowbinary.server.basic_auth.service.BasicUserDetailsService;
-import org.yellowbinary.server.basic_auth.service.HeaderAuthenticationFilter;
-import org.yellowbinary.server.basic_auth.service.HeaderAuthenticationUtil;
-import org.yellowbinary.server.basic_auth.service.rest.RestAccessDeniedHandler;
-import org.yellowbinary.server.basic_auth.service.rest.RestAuthenticationEntryPoint;
-import org.yellowbinary.server.basic_auth.service.rest.RestAuthenticationSuccessHandler;
+import org.yellowbinary.server.basic_security.service.BasicUserDetailsService;
+import org.yellowbinary.server.basic_security.service.HeaderAuthenticationFilter;
+import org.yellowbinary.server.basic_security.service.HeaderAuthenticationUtil;
+import org.yellowbinary.server.basic_security.service.rest.RestAccessDeniedHandler;
+import org.yellowbinary.server.basic_security.service.rest.RestAuthenticationEntryPoint;
+import org.yellowbinary.server.basic_security.service.rest.RestAuthenticationSuccessHandler;
 import org.yellowbinary.server.core.service.EncryptionService;
 import org.yellowbinary.server.core.service.SessionService;
 

@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.interceptors;
+package org.yellowbinary.server.basic_security.interceptors;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.service.rest;
+package org.yellowbinary.server.basic_security.service.rest;
 
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;

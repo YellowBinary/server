@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.service;
+package org.yellowbinary.server.basic_security.service;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.model;
+package org.yellowbinary.server.basic_security.model;
 
 import com.google.common.collect.Sets;
 import org.hibernate.annotations.Parameter;

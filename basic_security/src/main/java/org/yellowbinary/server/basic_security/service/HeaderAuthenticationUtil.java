@@ -1,4 +1,4 @@
-package org.yellowbinary.server.basic_auth.service;
+package org.yellowbinary.server.basic_security.service;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;

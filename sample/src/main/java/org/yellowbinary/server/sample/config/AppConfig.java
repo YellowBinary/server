@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.yellowbinary.server.basic_auth.config.EnableCmsBasicSecurity;
+import org.yellowbinary.server.basic_security.config.EnableCmsBasicSecurity;
 import org.yellowbinary.server.core.config.EnableCms;
 import org.yellowbinary.server.preview.config.EnableCmsPreview;
 import org.yellowbinary.server.sample.SampleDataFixtures;
