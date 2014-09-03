@@ -2,18 +2,25 @@ package org.yellowbinary.server.core;
 
 public class NoSuchProviderException extends RuntimeException {
 
-    public final String type;
-    public final String with;
+    private final String base;
+    private final String with;
 
-    public NoSuchProviderException(String type, String with) {
-        this.type = type;
+    public NoSuchProviderException(String base, String with) {
+        this.base = base;
         this.with = with;
     }
 
-    public NoSuchProviderException(String s, String type, String with) {
+    public NoSuchProviderException(String s, String base, String with) {
         super(s);
-        this.type = type;
+        this.base = base;
         this.with = with;
     }
 
+    public String getBase() {
+        return base;
+    }
+
+    public String getWith() {
+        return with;
+    }
 }

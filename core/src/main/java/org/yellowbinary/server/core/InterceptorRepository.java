@@ -2,9 +2,9 @@ package org.yellowbinary.server.core;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.springframework.stereotype.Repository;
 import org.yellowbinary.server.core.annotation.CachedAnnotation;
 import org.yellowbinary.server.core.annotation.CachedModule;
-import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-@Component
+@Repository
 public class InterceptorRepository {
 
     public Map<Class<? extends Annotation>, Set<CachedAnnotation>> interceptors = Maps.newHashMap();

@@ -1,7 +1,5 @@
 package org.yellowbinary.server.core.stereotypes;
 
-import org.yellowbinary.server.core.Core;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -17,13 +15,12 @@ import java.lang.annotation.Target;
  * When type=NAVIGATION is called when the main navigation is loaded.
  * When type=NAVIGATION_ITEM is called for each navigation item being loaded.
  *
- * @see org.yellowbinary.server.core.Node
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
 public @interface OnLoad {
 
-    String base() default Core.Base.NODE;
+    String base() default "";
 
     String with() default "";
     int weight() default 1000;

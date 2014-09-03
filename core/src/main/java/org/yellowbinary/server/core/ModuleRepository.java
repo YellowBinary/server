@@ -4,33 +4,32 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.yellowbinary.server.core.annotation.CachedModule;
-import org.yellowbinary.server.core.dao.ConfigurationDao;
 import org.yellowbinary.server.core.stereotypes.Module;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 
-@Component
+@Repository
 public class ModuleRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(ModuleRepository.class);
 
     @Autowired
-    private ConfigurationDao configurationDao;
+    private Configuration configuration;
 
-    public Map<String, CachedModule> modules = Maps.newHashMap();
+    private Map<String, CachedModule> modules = Maps.newHashMap();
 
     public CachedModule add(Module module, Object bean) {
         if (modules.containsKey(module.name())) {
             throw new InitializationException("Duplicate Module name ["+module.name()+"]");
         }
-        if (module.order() <= 0 && !module.name().equals(CoreModule.NAME)) {
+        if (module.order() < 0) {
             throw new InitializationException("Order must be higher than 0");
         }
 
@@ -71,17 +70,17 @@ public class ModuleRepository {
     }
 
     public boolean isEnabled(CachedModule module) {
-        return configurationDao.readValue(Boolean.class, "module." + module.getName() + ".enabled", true);
+        return configuration.readValue(Boolean.class, "module." + module.getName() + ".enabled", true);
     }
 
     public void enable(CachedModule module) {
-        configurationDao.updateValue("module."+ module.getName()+ ".enabled", true);
+        configuration.updateValue("module."+ module.getName()+ ".enabled", true);
     }
 
     public void enable(String moduleName) throws ModuleException {
         if (!modules.containsKey(moduleName)) {
             LOG.error("Unknown module '"+moduleName+"'");
-            throw new ModuleException(moduleName, ModuleException.Cause.NOT_INSTALLED, "Unknown module '"+moduleName+"'");
+            throw new ModuleException(moduleName, ModuleException.Reason.NOT_INSTALLED, "Unknown module '"+moduleName+"'");
         }
 
         enable(modules.get(moduleName));

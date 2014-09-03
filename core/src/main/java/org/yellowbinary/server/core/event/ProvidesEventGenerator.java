@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 import org.yellowbinary.server.core.*;
 import org.yellowbinary.server.core.annotation.CachedAnnotation;
 import org.yellowbinary.server.core.annotation.ReflectionInvoker;
-import org.yellowbinary.server.core.model.RootNode;
-import org.yellowbinary.server.core.service.EventHandlerService;
+import org.yellowbinary.server.core.event.handler.EventHandlerService;
 import org.yellowbinary.server.core.stereotypes.Provides;
 
 import java.util.List;
@@ -37,20 +36,20 @@ public class ProvidesEventGenerator {
     @Autowired
     private EventHandlerService eventHandlerService;
 
-    public <T> T triggerInterceptor(RootNode node, String providesType, String withType) throws NodeLoadException, ModuleException {
-        return triggerInterceptor(node, providesType, withType, Maps.<String, Object>newHashMap());
+    public <T> T triggerInterceptor(Object o, String providesType, String withType) throws ModuleException {
+        return triggerInterceptor(o, providesType, withType, Maps.<String, Object>newHashMap());
     }
 
-    public <T> T triggerInterceptor(RootNode node, String providesType, String withType, Map<String, Object> args) throws NodeLoadException, ModuleException {
+    public <T> T triggerInterceptor(Object o, String providesType, String withType, Map<String, Object> args) throws ModuleException {
         CachedAnnotation cachedAnnotation = getCachedAnnotationIfModuleIsEnabled(providesType, withType);
-        return ReflectionInvoker.execute(cachedAnnotation, node, withType, args);
+        return ReflectionInvoker.execute(cachedAnnotation, o, withType, args);
     }
 
     private CachedAnnotation getCachedAnnotationIfModuleIsEnabled(String providesType, String withType) throws ModuleException {
         CachedAnnotation cachedAnnotation = findInterceptor(providesType, withType);
         if (!moduleRepository.isEnabled(cachedAnnotation.getModule())) {
             LOG.debug("Module '" + cachedAnnotation.getModule().getName() + "' is disabled");
-            throw new ModuleException(cachedAnnotation.getModule().getName(), ModuleException.Cause.NOT_ENABLED);
+            throw new ModuleException(cachedAnnotation.getModule().getName(), ModuleException.Reason.NOT_ENABLED);
         }
         return cachedAnnotation;
     }

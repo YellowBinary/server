@@ -2,29 +2,29 @@ package org.yellowbinary.server.sample;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.yellowbinary.server.basic_security.dao.BasicAuthorizationDao;
-import org.yellowbinary.server.basic_security.dao.BasicRoleDao;
-import org.yellowbinary.server.basic_security.dao.BasicUserDao;
-import org.yellowbinary.server.basic_security.model.BasicAuthorization;
-import org.yellowbinary.server.basic_security.model.BasicRole;
-import org.yellowbinary.server.basic_security.model.BasicUser;
-import org.yellowbinary.server.core.Core;
-import org.yellowbinary.server.core.State;
-import org.yellowbinary.server.core.dao.AliasDao;
-import org.yellowbinary.server.core.dao.BasicPageDao;
-import org.yellowbinary.server.core.dao.BlockDao;
-import org.yellowbinary.server.core.dao.ConfigurationDao;
-import org.yellowbinary.server.core.dao.MetaDao;
-import org.yellowbinary.server.core.dao.ReleaseDao;
-import org.yellowbinary.server.core.dao.RootNodeDao;
-import org.yellowbinary.server.core.dao.TextDao;
-import org.yellowbinary.server.core.model.Alias;
-import org.yellowbinary.server.core.model.Release;
-import org.yellowbinary.server.core.model.RootNode;
-import org.yellowbinary.server.core.model.content.BasicPage;
-import org.yellowbinary.server.core.model.content.Block;
-import org.yellowbinary.server.core.model.Meta;
-import org.yellowbinary.server.core.model.content.Text;
+import org.yellowbinary.server.backend.Backend;
+import org.yellowbinary.server.backend.model.State;
+import org.yellowbinary.server.security.dao.BasicAuthorizationDao;
+import org.yellowbinary.server.security.dao.BasicRoleDao;
+import org.yellowbinary.server.security.dao.BasicUserDao;
+import org.yellowbinary.server.security.model.BasicAuthorization;
+import org.yellowbinary.server.security.model.BasicRole;
+import org.yellowbinary.server.security.model.BasicUser;
+import org.yellowbinary.server.backend.dao.AliasDao;
+import org.yellowbinary.server.backend.dao.BasicPageDao;
+import org.yellowbinary.server.backend.dao.BlockDao;
+import org.yellowbinary.server.backend.dao.ConfigurationDao;
+import org.yellowbinary.server.backend.dao.MetaDao;
+import org.yellowbinary.server.backend.dao.ReleaseDao;
+import org.yellowbinary.server.backend.dao.RootNodeDao;
+import org.yellowbinary.server.backend.dao.TextDao;
+import org.yellowbinary.server.backend.model.Alias;
+import org.yellowbinary.server.backend.model.Release;
+import org.yellowbinary.server.backend.model.RootNode;
+import org.yellowbinary.server.backend.model.content.BasicPage;
+import org.yellowbinary.server.backend.model.content.Block;
+import org.yellowbinary.server.backend.model.Meta;
+import org.yellowbinary.server.backend.model.content.Text;
 
 import javax.transaction.Transactional;
 import java.util.UUID;
@@ -69,7 +69,7 @@ public class SampleDataFixtures {
     private String page1Text;
 
     public void create() {
-        if (configurationDao.readValue(Boolean.class, Core.Settings.BASE_URL) == null) {
+        if (configurationDao.readValue(Boolean.class, Backend.Settings.BASE_URL) == null) {
             createSettings();
             createPage1();
             createPage2();
@@ -90,11 +90,11 @@ public class SampleDataFixtures {
     }
 
     private void createSettings() {
-        configurationDao.setValueIfMissing(Core.Settings.BASE_URL, "/");
-        configurationDao.setValueIfMissing(Core.Settings.START_PAGE, "2c36c55dd-956e-4b78-18c4-eef7e56aa17"); // Page 1
-        configurationDao.setValueIfMissing(Core.Settings.PAGE_NOT_FOUND_PAGE, "c9615819-0556-4e70-b6a9-a66c5b8d4c1a"); // Page 2
-        configurationDao.setValueIfMissing(Core.Settings.INTERNAL_SERVER_ERROR_PAGE, "1cf699a7-a0c4-4be0-855f-466042a36a8d"); // Page 3
-        configurationDao.setValueIfMissing(Core.Settings.UNAUTHORIZED_PAGE, "f4501c31-690f-46f4-853d-167165a4fc03"); // Page 6
+        configurationDao.setValueIfMissing(Backend.Settings.BASE_URL, "/");
+        configurationDao.setValueIfMissing(Backend.Settings.START_PAGE, "2c36c55dd-956e-4b78-18c4-eef7e56aa17"); // Page 1
+        configurationDao.setValueIfMissing(Backend.Settings.PAGE_NOT_FOUND_PAGE, "c9615819-0556-4e70-b6a9-a66c5b8d4c1a"); // Page 2
+        configurationDao.setValueIfMissing(Backend.Settings.INTERNAL_SERVER_ERROR_PAGE, "1cf699a7-a0c4-4be0-855f-466042a36a8d"); // Page 3
+        configurationDao.setValueIfMissing(Backend.Settings.UNAUTHORIZED_PAGE, "f4501c31-690f-46f4-853d-167165a4fc03"); // Page 6
 
 /*
         configurationDao.setValueIfMissing(Core.Settings.USER_TYPE, BasicUser.TYPE);

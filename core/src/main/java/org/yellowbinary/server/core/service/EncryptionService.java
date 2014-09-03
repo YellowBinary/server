@@ -1,13 +1,11 @@
 package org.yellowbinary.server.core.service;
 
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-import org.yellowbinary.server.core.dao.ConfigurationDao;
+import org.yellowbinary.server.core.Configuration;
 
 import javax.annotation.PostConstruct;
 import javax.crypto.BadPaddingException;
@@ -34,7 +32,7 @@ public class EncryptionService {
     private boolean encryptionEnabled;
 
     @Autowired
-    private ConfigurationDao configurationDao;
+    private Configuration configuration;
 
     @Autowired
     private Environment env;

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Sample</artifactId>
+    <artifactId>sample</artifactId>
     <packaging>jar</packaging>
 
     <properties>
@@ -21,19 +21,19 @@
         <!-- Internal -->
         <dependency>
             <groupId>org.yellowbinary.server</groupId>
-            <artifactId>Core</artifactId>
+            <artifactId>backend</artifactId>
             <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.yellowbinary.server</groupId>
-            <artifactId>Preview</artifactId>
+            <artifactId>preview</artifactId>
             <version>0.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.yellowbinary.server</groupId>
-            <artifactId>BasicAuth</artifactId>
+            <artifactId>backend-security</artifactId>
             <version>0.1.0</version>
         </dependency>
 

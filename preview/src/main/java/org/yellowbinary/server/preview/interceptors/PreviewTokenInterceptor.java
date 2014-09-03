@@ -1,15 +1,15 @@
 package org.yellowbinary.server.preview.interceptors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.yellowbinary.server.core.Core;
+import org.yellowbinary.server.backend.Backend;
+import org.yellowbinary.server.backend.Node;
+import org.yellowbinary.server.backend.NodeLoadException;
 import org.yellowbinary.server.core.ModuleException;
-import org.yellowbinary.server.core.Node;
-import org.yellowbinary.server.core.NodeLoadException;
 import org.yellowbinary.server.core.context.Context;
-import org.yellowbinary.server.core.model.Meta;
-import org.yellowbinary.server.core.model.content.Text;
-import org.yellowbinary.server.core.preview.Preview;
-import org.yellowbinary.server.core.preview.Ticket;
+import org.yellowbinary.server.backend.model.Meta;
+import org.yellowbinary.server.backend.model.content.Text;
+import org.yellowbinary.server.backend.preview.Preview;
+import org.yellowbinary.server.backend.preview.Ticket;
 import org.yellowbinary.server.core.stereotypes.Interceptor;
 import org.yellowbinary.server.core.stereotypes.OnLoad;
 import org.yellowbinary.server.core.stereotypes.Provides;
@@ -85,7 +85,7 @@ public class PreviewTokenInterceptor {
     }
 */
 
-    @OnLoad(base = Core.Base.NODE)
+    @OnLoad(base = Backend.Base.NODE)
     public void loadNode(Node node, String withType, Map<String, Object> args) throws ModuleException, NodeLoadException {
         if (!Context.current().hasAttribute(COMMENT_LOADED) && previewService.hasTicket() && previewService.verifyCurrent()) {
             node.addChild(new Text(getComment()), Meta.defaultMeta());
@@ -98,7 +98,7 @@ public class PreviewTokenInterceptor {
         return "Preview-Ticket { token: \""+ basicTicket.getToken()+"\", valid-until: \"\\/Date("+ basicTicket.getValidUntilDateTime().getMillis()+")\\/\" }";
     }
 
-    @Provides(base = Core.Base.PREVIEW, with = Preview.With.PREVIEW_TOKEN)
+    @Provides(base = Backend.Base.PREVIEW, with = Preview.With.PREVIEW_TOKEN)
     public Ticket getCurrentToken(Node node, String withType, Map<String, Object> args) throws ModuleException, NodeLoadException {
         return previewService.getCurrent();
     }

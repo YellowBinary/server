@@ -6,10 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.yellowbinary.server.core.Configuration;
 import org.yellowbinary.server.core.context.Context;
-import org.yellowbinary.server.core.dao.ConfigurationDao;
 import org.yellowbinary.server.core.helpers.DateHelper;
-import org.yellowbinary.server.core.security.Security;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -20,30 +19,30 @@ public class SessionService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SessionService.class);
 
+    public static final String SESSION_KEY = "X-Session-Timestamp";
+
     @Autowired
     private EncryptionService encryptionService;
 
     @Autowired
-    private ConfigurationDao configurationDao;
+    private Configuration configuration;
 
     private Period sessionMaxAge;
 
     @PostConstruct
     public void register() {
-/*
-        String maxAge = configurationDao.readValue(String.class, "application.session.maxAge", "30m");
+        String maxAge = configuration.readValue(String.class, "application.session.maxAge", "30m");
         sessionMaxAge = DateHelper.parsePeriod(maxAge);
         LOG.debug("Session maxAge is: " +
                         formatIfNotZero(sessionMaxAge.getDays(), "days", "day") +
                         formatIfNotZero(sessionMaxAge.getHours(), "hours", "hour") +
                         formatIfNotZero(sessionMaxAge.getMinutes(), "minutes", "minute")
         );
-*/
     }
 
     public void validateAndUpdateTimestamp() {
         isSessionValid();
-        set(Security.Header.SESSION_KEY, String.valueOf(DateTime.now().getMillis()));
+        set(SESSION_KEY, String.valueOf(DateTime.now().getMillis()));
     }
 
     public boolean isSessionValid() {
@@ -59,7 +58,7 @@ public class SessionService {
     }
 
     public DateTime getTimestamp() {
-        String timestamp = getResponse().getHeader(Security.Header.SESSION_KEY);
+        String timestamp = getResponse().getHeader(SESSION_KEY);
         DateTime dateTime = new DateTime(0);
         if (timestamp != null) {
             try {

@@ -1,7 +1,7 @@
 package org.yellowbinary.server.preview.model;
 
 import org.joda.time.DateTime;
-import org.yellowbinary.server.core.preview.Ticket;
+import org.yellowbinary.server.backend.preview.Ticket;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

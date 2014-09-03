@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 import org.yellowbinary.server.core.*;
 import org.yellowbinary.server.core.annotation.CachedAnnotation;
 import org.yellowbinary.server.core.annotation.ReflectionInvoker;
-import org.yellowbinary.server.core.model.RootNode;
-import org.yellowbinary.server.core.model.content.Text;
 import org.yellowbinary.server.core.stereotypes.OnLoad;
 
 import java.util.Collections;
@@ -27,37 +25,20 @@ public class OnLoadEventGenerator {
     @Autowired
     private InterceptorRepository interceptorRepository;
 
-
-    /* ************************** */
-    /* Root Node Event Generators */
-    /* ************************** */
-    public void triggerBeforeInterceptor(RootNode rootNode, String node, String type, Map<Object, Object> args) {
-        List<CachedAnnotation> interceptors = findInterceptorForType(node, !StringUtils.isBlank(type) ? type : rootNode.getClass().getName(), false);
+    public void triggerBeforeInterceptor(Object o, String type, String withType, Map<String, Object> args) throws ModuleException {
+        List<CachedAnnotation> interceptors = findInterceptorForType(type, !StringUtils.isBlank(withType) ? withType : o.getClass().getName(), false);
         if (interceptors != null && !interceptors.isEmpty()) {
             for (CachedAnnotation cachedAnnotation : interceptors) {
-                ReflectionInvoker.execute(cachedAnnotation, args);
+                ReflectionInvoker.execute(cachedAnnotation, o, withType, args);
             }
         }
     }
 
-    /* ************************** */
-    /* Node Event Generators      */
-    /* ************************** */
-
-    public void triggerBeforeInterceptor(Node node, String type, String withType, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        List<CachedAnnotation> interceptors = findInterceptorForType(type, !StringUtils.isBlank(withType) ? withType : node.getClass().getName(), false);
-        if (interceptors != null && !interceptors.isEmpty()) {
-            for (CachedAnnotation cachedAnnotation : interceptors) {
-                ReflectionInvoker.execute(cachedAnnotation, node, withType, args);
-            }
-        }
-    }
-
-    public void triggerAfterInterceptor(Node node, String base, String with, Map<String, Object> args) throws NodeLoadException, ModuleException {
-        List<CachedAnnotation> interceptorList = findInterceptorForType(base, !StringUtils.isBlank(with) ? with : node.getClass().getName(), true);
+    public void triggerAfterInterceptor(Object o, String base, String with, Map<String, Object> args) throws ModuleException {
+        List<CachedAnnotation> interceptorList = findInterceptorForType(base, !StringUtils.isBlank(with) ? with : o.getClass().getName(), true);
         if (interceptorList != null && !interceptorList.isEmpty()) {
             for (CachedAnnotation cachedAnnotation : interceptorList) {
-                ReflectionInvoker.execute(cachedAnnotation, node, with, args);
+                ReflectionInvoker.execute(cachedAnnotation, o, with, args);
             }
         }
     }

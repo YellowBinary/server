@@ -1,6 +1,6 @@
 package org.yellowbinary.server.preview;
 
-import org.yellowbinary.server.core.CoreModule;
+import org.yellowbinary.server.backend.BackendModule;
 import org.yellowbinary.server.core.annotation.Dependency;
 import org.yellowbinary.server.core.stereotypes.Module;
 
@@ -15,7 +15,7 @@ public class PreviewModule {
 
     @Module.Dependencies
     public static List<Dependency> dependencies() {
-        return Collections.singletonList(new Dependency(CoreModule.NAME, 0, 1));
+        return Collections.singletonList(new Dependency(BackendModule.NAME, 0, 1));
     }
 
 }

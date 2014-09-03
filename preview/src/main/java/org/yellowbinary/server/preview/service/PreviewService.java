@@ -7,14 +7,14 @@ import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.yellowbinary.server.core.Core;
+import org.yellowbinary.server.backend.Backend;
+import org.yellowbinary.server.backend.NodeLoadException;
 import org.yellowbinary.server.core.ModuleException;
-import org.yellowbinary.server.core.NodeLoadException;
 import org.yellowbinary.server.core.context.Context;
-import org.yellowbinary.server.core.dao.ConfigurationDao;
+import org.yellowbinary.server.backend.dao.ConfigurationDao;
 import org.yellowbinary.server.core.event.ProvidesEventGenerator;
 import org.yellowbinary.server.core.helpers.DateHelper;
-import org.yellowbinary.server.core.security.Security;
+import org.yellowbinary.server.backend.security.Security;
 import org.yellowbinary.server.core.service.SessionService;
 import org.yellowbinary.server.preview.dao.BasicTicketDao;
 import org.yellowbinary.server.preview.model.BasicTicket;
@@ -106,7 +106,7 @@ public class PreviewService {
     public BasicTicket getCurrent() throws NodeLoadException, ModuleException {
         String previewToken = sessionService.get(SESSION_PREVIEW_TICKET_KEY);
         if (StringUtils.isNotBlank(previewToken)) {
-            Authentication authentication = providesEventGenerator.triggerInterceptor(null, Core.Base.SECURITY, Security.With.AUTHENTICATION_CURRENT_USER);
+            Authentication authentication = providesEventGenerator.triggerInterceptor(null, Backend.Base.SECURITY, Security.With.AUTHENTICATION_CURRENT_USER);
             if (authentication != null) {
                 return getIfValid(authentication, previewToken);
             }
