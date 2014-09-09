@@ -15,16 +15,16 @@ public class StoredEventHandlerRepository implements EventHandlerRepository {
 
     @Override
     public EventHandler getEventHandler(String base, String with) {
-        return eventHandlerDao.findWithNodeTypeAndWithType(base, with);
+        return eventHandlerDao.findWithBaseAndWithType(base, with);
     }
 
     @Override
     public void storeEventHandler(String base, String with, String annotation, String handlerClass) {
         StoredEventHandler eventHandler = new StoredEventHandler();
-        eventHandler.setBase(base);
-        eventHandler.setWith(with);
+        eventHandler.setBaseType(base);
+        eventHandler.setWithType(with);
         eventHandler.setAnnotation(annotation);
         eventHandler.setHandlerClass(handlerClass);
-
+        eventHandlerDao.save(eventHandler);
     }
 }

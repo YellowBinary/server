@@ -47,7 +47,7 @@ public class BlockProvider {
     }
 
     @OnLoad(base = Backend.Base.NODE, with = Block.TYPE)
-    public void decorateBlock(Node node, String withType, Map<String, Object> args) throws NodeLoadException, ModuleException, NodeNotFoundException {
+    public void decorateBlock(Node node, Map<String, Object> args) throws NodeLoadException, ModuleException, NodeNotFoundException {
         Block block = (Block) node;
         if (block != null && !StringUtils.isBlank(block.getReferenceId())) {
             try {

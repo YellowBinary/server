@@ -21,12 +21,12 @@ public class InMemoryEventHandlerRepository implements EventHandlerRepository {
             }
 
             @Override
-            public String getBase() {
+            public String getBaseType() {
                 return base;
             }
 
             @Override
-            public String getWith() {
+            public String getWithType() {
                 return with;
             }
 

@@ -30,6 +30,8 @@ public class PreviewEventGenerator {
                 }
             } catch (NoSuchProviderException e) {
                 LOG.error("No provider for PreviewTicket's available.", e);
+            } catch (InterceptorException e) {
+                LOG.error("Provider for PreviewTicket's failed.", e);
             }
         }
 

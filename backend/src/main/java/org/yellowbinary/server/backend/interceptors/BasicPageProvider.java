@@ -52,7 +52,7 @@ public class BasicPageProvider {
     }
 
     @OnLoad(base = Backend.Base.NODE, with = TYPE)
-    public void decoratePage(Node node, String withType, Map<String, Object> args) throws ModuleException, NodeLoadException, NodeNotFoundException {
+    public void decoratePage(Node node, Map<String, Object> args) throws ModuleException, NodeLoadException, NodeNotFoundException {
 
         BasicPage page = (BasicPage) node;
 

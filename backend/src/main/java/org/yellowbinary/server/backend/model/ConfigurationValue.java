@@ -3,7 +3,7 @@ package org.yellowbinary.server.backend.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@Entity
+@Entity(name = "configuration")
 @Table(name = "configuration")
 public class ConfigurationValue {
 

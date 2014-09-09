@@ -20,14 +20,11 @@ public class ModuleRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(ModuleRepository.class);
 
-    @Autowired
-    private Configuration configuration;
-
     private Map<String, CachedModule> modules = Maps.newHashMap();
 
     public CachedModule add(Module module, Object bean) {
         if (modules.containsKey(module.name())) {
-            throw new InitializationException("Duplicate Module name ["+module.name()+"]");
+            throw new InitializationException(String.format("Duplicate Module name [%s]", module.name()));
         }
         if (module.order() < 0) {
             throw new InitializationException("Order must be higher than 0");
@@ -48,10 +45,13 @@ public class ModuleRepository {
 
     private Method getSingleMethod(Class c, final Class<? extends Annotation> annotation) {
         Set<Method> methods = Reflections.getAllMethods(c, ReflectionUtils.withAnnotation(annotation));
+        if (methods.isEmpty()) {
+            return null;
+        }
         if (methods.size() == 1) {
             return methods.iterator().next();
         }
-        LOG.warn(String.format("More than one %s annotation in class %s, skipping", annotation.getClass().getSimpleName(), c.getSimpleName()));
+        LOG.warn(String.format("More than one %s annotation in class %s, skipping", annotation.getName(), c.getSimpleName()));
         return null;
     }
 
@@ -69,20 +69,23 @@ public class ModuleRepository {
         return moduleList;
     }
 
-    public boolean isEnabled(CachedModule module) {
-        return configuration.readValue(Boolean.class, "module." + module.getName() + ".enabled", true);
-    }
-
-    public void enable(CachedModule module) {
-        configuration.updateValue("module."+ module.getName()+ ".enabled", true);
-    }
-
     public void enable(String moduleName) throws ModuleException {
         if (!modules.containsKey(moduleName)) {
-            LOG.error("Unknown module '"+moduleName+"'");
-            throw new ModuleException(moduleName, ModuleException.Reason.NOT_INSTALLED, "Unknown module '"+moduleName+"'");
+            String message = String.format("Unknown module '%s'", moduleName);
+            LOG.error(message);
+            throw new ModuleException(moduleName, ModuleException.Reason.NOT_INSTALLED, message);
         }
 
-        enable(modules.get(moduleName));
+        modules.get(moduleName).setEnabled(true);
+    }
+
+    public void disable(String moduleName) throws ModuleException {
+        if (!modules.containsKey(moduleName)) {
+            String message = String.format("Unknown module '%s'", moduleName);
+            LOG.error(message);
+            throw new ModuleException(moduleName, ModuleException.Reason.NOT_INSTALLED, message);
+        }
+
+        modules.get(moduleName).setEnabled(true);
     }
 }

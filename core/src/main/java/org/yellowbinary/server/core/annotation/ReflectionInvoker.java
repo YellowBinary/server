@@ -2,6 +2,7 @@ package org.yellowbinary.server.core.annotation;
 
 import com.google.common.collect.Sets;
 import org.springframework.security.access.AccessDeniedException;
+import org.yellowbinary.server.core.InterceptorException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -10,7 +11,7 @@ import java.util.Set;
 
 public class ReflectionInvoker {
 
-    public static <T> T execute(CachedAnnotation cachedAnnotation, Object... args) {
+    public static <T> T execute(CachedAnnotation cachedAnnotation, Object... args) throws InterceptorException {
 
         try {
             Class[] parameterTypes = cachedAnnotation.getMethod().getParameterTypes();
@@ -27,7 +28,7 @@ public class ReflectionInvoker {
             if (e.getTargetException() instanceof AccessDeniedException) {
                 throw (AccessDeniedException)e.getTargetException();
             }
-            throw new RuntimeException(String.format("Method [%s] threw an exception", cachedAnnotation.getMethod()), e.getTargetException());
+            throw new InterceptorException(String.format("Method [%s] threw an exception", cachedAnnotation.getMethod()), e.getTargetException());
         }
 
     }

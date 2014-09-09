@@ -28,27 +28,24 @@ public class ProvidesEventGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(ProvidesEventGenerator.class);
 
     @Autowired
-    private ModuleRepository moduleRepository;
-
-    @Autowired
     private InterceptorRepository interceptorRepository;
 
     @Autowired
     private EventHandlerService eventHandlerService;
 
-    public <T> T triggerInterceptor(Object o, String providesType, String withType) throws ModuleException {
-        return triggerInterceptor(o, providesType, withType, Maps.<String, Object>newHashMap());
+    public <T> T triggerInterceptor(Object o, String base, String with) throws InterceptorException, ModuleException {
+        return triggerInterceptor(o, base, with, Maps.<String, Object>newHashMap());
     }
 
-    public <T> T triggerInterceptor(Object o, String providesType, String withType, Map<String, Object> args) throws ModuleException {
-        CachedAnnotation cachedAnnotation = getCachedAnnotationIfModuleIsEnabled(providesType, withType);
-        return ReflectionInvoker.execute(cachedAnnotation, o, withType, args);
+    public <T> T triggerInterceptor(Object o, String base, String with, Map<String, Object> args) throws InterceptorException, ModuleException {
+        CachedAnnotation cachedAnnotation = getCachedAnnotationIfModuleIsEnabled(base, with);
+        return ReflectionInvoker.execute(cachedAnnotation, o, with, args);
     }
 
-    private CachedAnnotation getCachedAnnotationIfModuleIsEnabled(String providesType, String withType) throws ModuleException {
-        CachedAnnotation cachedAnnotation = findInterceptor(providesType, withType);
-        if (!moduleRepository.isEnabled(cachedAnnotation.getModule())) {
-            LOG.debug("Module '" + cachedAnnotation.getModule().getName() + "' is disabled");
+    private CachedAnnotation getCachedAnnotationIfModuleIsEnabled(String base, String with) throws ModuleException {
+        CachedAnnotation cachedAnnotation = findInterceptor(base, with);
+        if (!cachedAnnotation.getModule().isEnabled()) {
+            LOG.debug(String.format("Module '%s' is disabled", cachedAnnotation.getModule().getName()));
             throw new ModuleException(cachedAnnotation.getModule().getName(), ModuleException.Reason.NOT_ENABLED);
         }
         return cachedAnnotation;
@@ -84,7 +81,7 @@ public class ProvidesEventGenerator {
         });
     }
 
-    public CachedAnnotation findInterceptor(final String baseType, final String withType) {
+    protected CachedAnnotation findInterceptor(final String baseType, final String withType) {
         List<CachedAnnotation> providers = Lists.newArrayList(interceptorRepository.getInterceptors(Provides.class, new InterceptorRepository.InterceptorSelector() {
             @Override
             public boolean isCorrectInterceptor(CachedAnnotation cachedAnnotation) {
@@ -95,7 +92,7 @@ public class ProvidesEventGenerator {
 
         CachedAnnotation cacheAnnotation = eventHandlerService.selectEventHandler(Provides.class, baseType, withType, providers);
         if (cacheAnnotation == null) {
-            throw new NoSuchProviderException(baseType, withType, "Every type (specified by using attribute 'with') must have a class annotated with @Provides to instantiate an instance. Unable to find a provider for type '" + baseType + "' with '"+withType+"'");
+            throw new NoSuchProviderException(baseType, withType, String.format("Every type (specified by using attribute 'with') must have a class annotated with @Provides to instantiate an instance. Unable to find a provider for type '%s' with '%s'", baseType, withType));
         }
         return cacheAnnotation;
     }

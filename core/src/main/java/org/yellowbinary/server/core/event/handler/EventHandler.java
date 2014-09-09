@@ -4,9 +4,9 @@ public interface EventHandler {
 
     String getAnnotation();
 
-    String getBase();
+    String getBaseType();
 
-    String getWith();
+    String getWithType();
 
     String getHandlerClass();
 

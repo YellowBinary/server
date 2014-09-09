@@ -91,22 +91,26 @@ public class NodeService {
 
     private Node decorateNode(RootNode rootNode) throws NodeLoadException, ModuleException {
 
-        boolean hasType = StringUtils.isNotBlank(rootNode.getType()) && !rootNode.getType().equals(RootNode.class.getName());
+        try {
+            boolean hasType = StringUtils.isNotBlank(rootNode.getType()) && !rootNode.getType().equals(RootNode.class.getName());
 
-        if (hasType) {
-            onLoadEventGenerator.triggerBeforeInterceptor(rootNode, Backend.Base.NODE, rootNode.getType(), Collections.<String, Object>emptyMap());
+            if (hasType) {
+                onLoadEventGenerator.triggerBeforeInterceptor(rootNode, Backend.Base.NODE, rootNode.getType(), Collections.<String, Object>emptyMap());
+            }
+
+            Node node = null;
+            if (hasType) {
+                node = providesEventGenerator.triggerInterceptor(rootNode, Backend.Base.NODE, rootNode.getType());
+            }
+
+            if (hasType) {
+                onLoadEventGenerator.triggerAfterInterceptor(node, Backend.Base.NODE, rootNode.getType(), Collections.<String, Object>emptyMap());
+            }
+
+            return node;
+        } catch (InterceptorException e) {
+            throw new NodeLoadException(rootNode.getKey(), String.format("Unable to load node %s", rootNode.toString()), e);
         }
-
-        Node node = null;
-        if (hasType) {
-            node = providesEventGenerator.triggerInterceptor(rootNode, Backend.Base.NODE, rootNode.getType());
-        }
-
-        if (hasType) {
-            onLoadEventGenerator.triggerAfterInterceptor(node, Backend.Base.NODE, rootNode.getType(), Collections.<String, Object>emptyMap());
-        }
-
-        return node;
     }
 
 }

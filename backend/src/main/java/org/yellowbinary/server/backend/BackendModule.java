@@ -2,6 +2,7 @@ package org.yellowbinary.server.backend;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.yellowbinary.server.backend.security.NodeKey;
 import org.yellowbinary.server.core.annotation.Prototype;
 import org.yellowbinary.server.backend.dao.ConfigurationDao;
 import org.yellowbinary.server.backend.model.RootNode;
@@ -9,6 +10,7 @@ import org.yellowbinary.server.core.stereotypes.Module;
 import org.yellowbinary.server.core.stereotypes.OnLoad;
 import org.yellowbinary.server.core.stereotypes.Provides;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +44,12 @@ public class BackendModule {
         annotations.add(new Prototype(Provides.class, Object.class, Node.class, String.class));
         annotations.add(new Prototype(Provides.class, Object.class, Node.class, String.class, Map.class));
 
+        // Security types
+        annotations.add(new Prototype(Provides.class, Object.class, Node.class));
+        annotations.add(new Prototype(Provides.class, Object.class, Node.class, Map.class));
+        annotations.add(new Prototype(Provides.class, Object.class, NodeKey.class));
+        annotations.add(new Prototype(Provides.class, Object.class, NodeKey.class, Map.class));
+
 /*
         annotations.add(new AnnotationProcessor.Prototype(Provides.class, Object.class, Node.class, String.class, Form.class));
         annotations.add(new AnnotationProcessor.Prototype(Provides.class, Object.class, Node.class, String.class, Form.class, Map.class));
@@ -53,8 +61,6 @@ public class BackendModule {
 
         annotations.add(new Prototype(OnLoad.class, null, Node.class));
         annotations.add(new Prototype(OnLoad.class, null, Node.class, Map.class));
-        annotations.add(new Prototype(OnLoad.class, null, Node.class, String.class));
-        annotations.add(new Prototype(OnLoad.class, null, Node.class, String.class, Map.class));
 
 /*
         annotations.add(new AnnotationProcessor.Prototype(OnLoad.class, null, Node.class, String.class, Navigation.class));

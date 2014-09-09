@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.yellowbinary.server.backend.Backend;
 import org.yellowbinary.server.backend.Node;
 import org.yellowbinary.server.backend.NodeLoadException;
+import org.yellowbinary.server.core.InterceptorException;
 import org.yellowbinary.server.core.ModuleException;
 import org.yellowbinary.server.core.context.Context;
 import org.yellowbinary.server.backend.model.Meta;
@@ -86,20 +87,20 @@ public class PreviewTokenInterceptor {
 */
 
     @OnLoad(base = Backend.Base.NODE)
-    public void loadNode(Node node, String withType, Map<String, Object> args) throws ModuleException, NodeLoadException {
+    public void loadNode(Node node, Map<String, Object> args) throws ModuleException, NodeLoadException, InterceptorException {
         if (!Context.current().hasAttribute(COMMENT_LOADED) && previewService.hasTicket() && previewService.verifyCurrent()) {
             node.addChild(new Text(getComment()), Meta.defaultMeta());
             Context.current().addAttribute(COMMENT_LOADED, true);
         }
     }
 
-    private String getComment() throws ModuleException, NodeLoadException {
+    private String getComment() throws ModuleException, NodeLoadException, InterceptorException {
         BasicTicket basicTicket = previewService.getCurrent();
         return "Preview-Ticket { token: \""+ basicTicket.getToken()+"\", valid-until: \"\\/Date("+ basicTicket.getValidUntilDateTime().getMillis()+")\\/\" }";
     }
 
     @Provides(base = Backend.Base.PREVIEW, with = Preview.With.PREVIEW_TOKEN)
-    public Ticket getCurrentToken(Node node, String withType, Map<String, Object> args) throws ModuleException, NodeLoadException {
+    public Ticket getCurrentToken(Node node, String withType, Map<String, Object> args) throws ModuleException, NodeLoadException, InterceptorException {
         return previewService.getCurrent();
     }
 

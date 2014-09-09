@@ -4,17 +4,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.yellowbinary.server.backend.model.event.StoredEventHandler;
 import org.yellowbinary.server.core.event.handler.EventHandler;
 
 @Repository
 @Transactional
-public interface EventHandlerDao extends JpaRepository<EventHandler, Long> {
+public interface EventHandlerDao extends JpaRepository<StoredEventHandler, Long> {
 
-    @Query("select eh from StoredEventHandler eh where eh.nodeType=?1 and eh.withType=?2")
-    EventHandler findWithNodeTypeAndWithType(String nodeType, String withType);
+    @Query("select eh from StoredEventHandler eh where eh.baseType=?1 and eh.withType=?2")
+    EventHandler findWithBaseAndWithType(String base, String with);
 
 /*
-    public static EventHandler findWithNodeTypeAndWithType(String nodeType, String withType) {
+    public static EventHandler findWithBaseAndWithType(String nodeType, String withType) {
         try {
             return (EventHandler) JPA.em().
                     createQuery("from "+EventHandler.class.getName()+" an where an.nodeType=:nodeType and an.withType=:withType").

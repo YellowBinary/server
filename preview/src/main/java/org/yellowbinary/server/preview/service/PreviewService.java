@@ -9,13 +9,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.yellowbinary.server.backend.Backend;
 import org.yellowbinary.server.backend.NodeLoadException;
+import org.yellowbinary.server.core.InterceptorException;
 import org.yellowbinary.server.core.ModuleException;
 import org.yellowbinary.server.core.context.Context;
 import org.yellowbinary.server.backend.dao.ConfigurationDao;
 import org.yellowbinary.server.core.event.ProvidesEventGenerator;
 import org.yellowbinary.server.core.helpers.DateHelper;
 import org.yellowbinary.server.backend.security.Security;
-import org.yellowbinary.server.core.service.SessionService;
+import org.yellowbinary.server.core.service.SessionUtil;
 import org.yellowbinary.server.preview.dao.BasicTicketDao;
 import org.yellowbinary.server.preview.model.BasicTicket;
 
@@ -34,7 +35,7 @@ public class PreviewService {
     private BasicTicketDao basicTicketDao;
 
     @Autowired
-    private SessionService sessionService;
+    private SessionUtil sessionUtil;
 
     @Autowired
     private ProvidesEventGenerator providesEventGenerator;
@@ -96,15 +97,15 @@ public class PreviewService {
 
 
     public boolean hasTicket() {
-        return sessionService.get(SESSION_PREVIEW_TICKET_KEY) != null;
+        return sessionUtil.get(SESSION_PREVIEW_TICKET_KEY) != null;
     }
 
-    public boolean verifyCurrent() throws NodeLoadException, ModuleException {
+    public boolean verifyCurrent() throws NodeLoadException, ModuleException, InterceptorException {
         return getCurrent() != null;
     }
 
-    public BasicTicket getCurrent() throws NodeLoadException, ModuleException {
-        String previewToken = sessionService.get(SESSION_PREVIEW_TICKET_KEY);
+    public BasicTicket getCurrent() throws NodeLoadException, ModuleException, InterceptorException {
+        String previewToken = sessionUtil.get(SESSION_PREVIEW_TICKET_KEY);
         if (StringUtils.isNotBlank(previewToken)) {
             Authentication authentication = providesEventGenerator.triggerInterceptor(null, Backend.Base.SECURITY, Security.With.AUTHENTICATION_CURRENT_USER);
             if (authentication != null) {
@@ -114,7 +115,7 @@ public class PreviewService {
         return null;
     }
 
-    public BasicTicket updateTicket(DateTime preview) throws ModuleException, NodeLoadException {
+    public BasicTicket updateTicket(DateTime preview) throws ModuleException, NodeLoadException, InterceptorException {
         BasicTicket basicTicket = getCurrent();
         if (basicTicket != null) {
             basicTicket.setPreview(preview.getMillis());
@@ -127,7 +128,7 @@ public class PreviewService {
         Authentication authentication = (Authentication) Context.current().getAttribute(Security.Params.AUTH_USER);
         if (authentication != null) {
             BasicTicket basicTicket = createInstance(authentication, preview);
-            sessionService.set(SESSION_PREVIEW_TICKET_KEY, basicTicket.getToken());
+            sessionUtil.set(SESSION_PREVIEW_TICKET_KEY, basicTicket.getToken());
             return basicTicket;
         }
         return null;

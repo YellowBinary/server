@@ -16,6 +16,8 @@ public class CachedModule implements Comparable<CachedModule> {
     private final Method annotationsMethod;
     private final Method dependenciesMethod;
 
+    private boolean enabled = true;
+
     public CachedModule(String name, Object bean, Module annotation, Module.Version moduleVersion, Method initMethod,
                         Method annotationsMethod, Method dependencies) {
         this.name = name;
@@ -53,6 +55,14 @@ public class CachedModule implements Comparable<CachedModule> {
 
     public Method getDependenciesMethod() {
         return dependenciesMethod;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

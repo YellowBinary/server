@@ -1,15 +1,16 @@
 package org.yellowbinary.server.backend.model.event;
 
-import org.hibernate.annotations.Entity;
 import org.yellowbinary.server.core.event.handler.EventHandler;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "handlers")
+@Table(name = "eventhandlers")
 public class StoredEventHandler implements EventHandler {
 
     private static final String TYPE = "yellowbinary.eventhandler";
@@ -18,9 +19,13 @@ public class StoredEventHandler implements EventHandler {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "annotation")
     private String annotation;
-    private String base;
-    private String with;
+    @Column(name = "baseType")
+    private String baseType;
+    @Column(name = "withType")
+    private String withType;
+    @Column(name = "handler")
     private String handlerClass;
 
     public StoredEventHandler() {
@@ -42,20 +47,20 @@ public class StoredEventHandler implements EventHandler {
         this.annotation = annotation;
     }
 
-    public String getBase() {
-        return base;
+    public String getBaseType() {
+        return baseType;
     }
 
-    public void setBase(String base) {
-        this.base = base;
+    public void setBaseType(String baseType) {
+        this.baseType = baseType;
     }
 
-    public String getWith() {
-        return with;
+    public String getWithType() {
+        return withType;
     }
 
-    public void setWith(String with) {
-        this.with = with;
+    public void setWithType(String withType) {
+        this.withType = withType;
     }
 
     public String getHandlerClass() {

@@ -71,7 +71,7 @@ public class ConfigurationDaoImpl implements ConfigurationDao {
     private ConfigurationValue getConfiguration(String name) {
         try {
             return (ConfigurationValue)entityManager.
-                        createQuery("SELECT c FROM Configuration c WHERE c.name=:name").
+                        createQuery("SELECT c FROM configuration c WHERE c.name=:name").
                         setParameter("name", name).getSingleResult();
         } catch (NoResultException e) {
             return null;

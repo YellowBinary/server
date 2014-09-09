@@ -56,7 +56,7 @@ public class AnnotationProcessor {
             for (CachedModule cachedModule : moduleRepository.getAll()) {
                 sb.append(" - ").append(cachedModule).append("\n");
             }
-            LOG.debug("Modules registered: " + moduleRepository.getAll().size() + "\n" + sb.toString());
+            LOG.debug(String.format("Modules registered: %s\n%s", moduleRepository.getAll().size(), sb.toString()));
 
             sb = new StringBuilder();
             int count = 0;
@@ -66,7 +66,7 @@ public class AnnotationProcessor {
                 sb.append(" - ").append(a.getName()).append(" ").append(interceptors.size()).append("\n");
                 count += interceptors.size();
             }
-            LOG.debug("Interceptors registered: " + count + "\n" + sb.toString());
+            LOG.debug(String.format("Interceptors registered: %s\n%s", count, sb.toString()));
 
         }
     }
@@ -115,7 +115,7 @@ public class AnnotationProcessor {
         for (CachedModule module : moduleRepository.getAll()) {
 
             LOG.trace("------------------------------------------------");
-            LOG.trace("- Processing module '" + module.getName() + "'");
+            LOG.trace(String.format("- Processing module '%s'", module.getName()));
             LOG.trace("------------------------------------------------");
 
             Map<String, Object> interceptors = applicationContext.getBeansWithAnnotation(Interceptor.class);
@@ -192,14 +192,14 @@ public class AnnotationProcessor {
                     Class[] pc = m.getParameterTypes();
                     if (pc.length != parameterTypes.length) {
                         sb.append(String.format("Method '%s.%s (%s)' is annotated with '%s' but the method does not match the required signature but the method does not match the required signature but the method does not match the required signature (different amount of parameters)",
-                                m.getDeclaringClass().getName(), m.getName(), StringUtils.join(StringUtils.join(m.getParameterTypes())), annotationClass.getName()));
+                                m.getDeclaringClass().getName(), m.getName(), StringUtils.join(StringUtils.join(m.getParameterTypes(), ", ")), annotationClass.getName()));
                         break;
                     }
                     for (int i = 0; i < pc.length; i++) {
                         //noinspection unchecked
                         if (!parameterTypes[i].isAssignableFrom(pc[i])) {
                             sb.append(String.format("Method '%s.%s (%s)' is annotated with '%s' but the method does not match the required signature but the method does not match the required signature (parameter '%s' has the wrong type)",
-                                    m.getDeclaringClass().getName(), m.getName(), StringUtils.join(StringUtils.join(m.getParameterTypes())), annotationClass.getName(), parameterTypes[i].getName()));
+                                    m.getDeclaringClass().getName(), m.getName(), StringUtils.join(StringUtils.join(m.getParameterTypes(), ", ")), annotationClass.getName(), parameterTypes[i].getName()));
                             break;
                         }
                     }
@@ -208,7 +208,7 @@ public class AnnotationProcessor {
                     //noinspection unchecked
                     if (returnType != null && !returnType.isAssignableFrom(m.getReturnType())) {
                         sb.append(String.format("Method '%s.%s (%s)' is annotated with '%s' but the method does not match the required signature (wrong return type, expected [%s] and found [%s])",
-                                m.getDeclaringClass().getName(), m.getName(), StringUtils.join(StringUtils.join(m.getParameterTypes())), annotationClass.getName(), returnType, m.getReturnType()));
+                                m.getDeclaringClass().getName(), m.getName(), StringUtils.join(StringUtils.join(m.getParameterTypes()), ", "), annotationClass.getName(), returnType, m.getReturnType()));
                         break;
                     }
                 }

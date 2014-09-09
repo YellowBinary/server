@@ -1,7 +1,7 @@
 package org.yellowbinary.server.core.context;
 
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.yellowbinary.server.core.service.SessionService;
+import org.yellowbinary.server.core.service.SessionUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -11,16 +11,16 @@ import java.io.IOException;
 
 public class ContextFilter extends OncePerRequestFilter {
 
-    private SessionService sessionService;
+    private SessionUtil sessionUtil;
 
-    public ContextFilter(SessionService sessionService) {
-        this.sessionService = sessionService;
+    public ContextFilter(SessionUtil sessionUtil) {
+        this.sessionUtil = sessionUtil;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         Context.set(httpServletRequest, httpServletResponse);
-        sessionService.validateAndUpdateTimestamp();
+        sessionUtil.validateAndUpdateTimestamp();
         try {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } finally {

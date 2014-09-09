@@ -25,7 +25,7 @@ public class OnLoadEventGenerator {
     @Autowired
     private InterceptorRepository interceptorRepository;
 
-    public void triggerBeforeInterceptor(Object o, String type, String withType, Map<String, Object> args) throws ModuleException {
+    public void triggerBeforeInterceptor(Object o, String type, String withType, Map<String, Object> args) throws ModuleException, InterceptorException {
         List<CachedAnnotation> interceptors = findInterceptorForType(type, !StringUtils.isBlank(withType) ? withType : o.getClass().getName(), false);
         if (interceptors != null && !interceptors.isEmpty()) {
             for (CachedAnnotation cachedAnnotation : interceptors) {
@@ -34,7 +34,7 @@ public class OnLoadEventGenerator {
         }
     }
 
-    public void triggerAfterInterceptor(Object o, String base, String with, Map<String, Object> args) throws ModuleException {
+    public void triggerAfterInterceptor(Object o, String base, String with, Map<String, Object> args) throws ModuleException, InterceptorException {
         List<CachedAnnotation> interceptorList = findInterceptorForType(base, !StringUtils.isBlank(with) ? with : o.getClass().getName(), true);
         if (interceptorList != null && !interceptorList.isEmpty()) {
             for (CachedAnnotation cachedAnnotation : interceptorList) {
