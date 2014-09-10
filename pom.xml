@@ -48,14 +48,14 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator-annotation-processor</artifactId>
-                <version>${hibernate-validator.version}</version>
+                <version>5.1.2.Final</version>
             </dependency>
 
             <!-- Persistence -->
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
-                <version>5.1.2.Final</version>
+                <version>4.3.6.Final</version>
             </dependency>
 
             <dependency>
