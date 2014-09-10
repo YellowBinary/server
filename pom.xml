@@ -52,6 +52,11 @@
             </dependency>
 
             <!-- Persistence -->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>core</artifactId>
+                <version>5.1.2.Final</version>
+            </dependency>
 
             <dependency>
                 <groupId>net.sf.ehcache</groupId>
