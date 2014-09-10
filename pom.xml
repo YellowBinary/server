@@ -54,7 +54,7 @@
             <!-- Persistence -->
             <dependency>
                 <groupId>org.hibernate</groupId>
-                <artifactId>core</artifactId>
+                <artifactId>hibernate-core</artifactId>
                 <version>5.1.2.Final</version>
             </dependency>
 
