@@ -4,6 +4,7 @@ YellowBinary Server
 Server (Parent)
 - - -
 [![Build Status](https://travis-ci.org/YellowBinary/server.svg?branch=master "Build Status")](https://travis-ci.org/YellowBinary/server)
+
 [![Dependency Status](https://www.versioneye.com/user/projects/54105ca39e1622507400004e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/54105ca39e1622507400004e)
 
 Core
@@ -16,7 +17,7 @@ Backend
 
 Backend Security
 - - -
-?
+[![Dependency Status](https://www.versioneye.com/user/projects/541111e29e162225be00007b/badge.svg?style=flat)](https://www.versioneye.com/user/projects/541111e29e162225be00007b)
 
 Preview
 - - -
