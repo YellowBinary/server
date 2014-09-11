@@ -1,6 +1,5 @@
 package org.yellowbinary.server.backend.config.security;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.expression.SecurityExpressionRoot;
@@ -10,7 +9,6 @@ import org.yellowbinary.server.backend.Backend;
 import org.yellowbinary.server.backend.security.IdentityUnavailableException;
 import org.yellowbinary.server.backend.security.NodeKey;
 import org.yellowbinary.server.backend.security.Security;
-import org.yellowbinary.server.backend.service.AliasService;
 import org.yellowbinary.server.core.InterceptorException;
 import org.yellowbinary.server.core.ModuleException;
 import org.yellowbinary.server.core.event.ProvidesEventGenerator;
@@ -27,7 +25,6 @@ public class CustomSecurityExpressionRoot extends SecurityExpressionRoot impleme
     private Object target;
     private Method method;
 
-    private AliasService aliasService;
     private ProvidesEventGenerator providesEventGenerator;
 
     public CustomSecurityExpressionRoot(Authentication a) {
@@ -57,7 +54,7 @@ public class CustomSecurityExpressionRoot extends SecurityExpressionRoot impleme
         }
 
         Set<String> roles = providesEventGenerator.triggerInterceptor(nodeKey, Backend.Base.SECURITY, Security.With.AUTHORIZATION_ROLES);
-        return !roles.isEmpty() || hasRole(roles);
+        return roles.isEmpty() || hasRole(roles);
     }
 
     private boolean hasRole(Set<String> roles) {
@@ -99,7 +96,4 @@ public class CustomSecurityExpressionRoot extends SecurityExpressionRoot impleme
         this.providesEventGenerator = providesEventGenerator;
     }
 
-    public void aliasService(AliasService aliasService) {
-        this.aliasService = aliasService;
-    }
 }

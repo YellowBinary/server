@@ -8,16 +8,12 @@ import org.springframework.security.authentication.AuthenticationTrustResolverIm
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.yellowbinary.server.core.event.ProvidesEventGenerator;
-import org.yellowbinary.server.backend.service.AliasService;
 
 @Component
 public class CustomMethodSecurityExpressionHandler extends DefaultMethodSecurityExpressionHandler {
 
     @Autowired
     private ProvidesEventGenerator providesEventGenerator;
-
-    @Autowired
-    private AliasService aliasService;
 
     public CustomMethodSecurityExpressionHandler() {
     }
@@ -31,7 +27,6 @@ public class CustomMethodSecurityExpressionHandler extends DefaultMethodSecurity
         root.setRoleHierarchy(getRoleHierarchy());
         root.setMethod(invocation.getMethod());
         root.providesEventGenerator(providesEventGenerator);
-        root.aliasService(aliasService);
         return root;
     }
 
