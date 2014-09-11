@@ -14,7 +14,7 @@
         <module>admin</module>
         <module>admin_security</module>
         <module>backend</module>
-        <module>backend_security</module>
+        <module>backend-security</module>
     </modules>
 
     <parent>
