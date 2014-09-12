@@ -9,12 +9,12 @@
 
     <modules>
         <module>core</module>
-        <module>sample</module>
-        <module>preview</module>
-        <module>admin</module>
-        <module>admin_security</module>
         <module>backend</module>
         <module>backend-security</module>
+        <module>admin</module>
+        <module>admin-security</module>
+        <module>preview</module>
+        <module>sample</module>
     </modules>
 
     <parent>

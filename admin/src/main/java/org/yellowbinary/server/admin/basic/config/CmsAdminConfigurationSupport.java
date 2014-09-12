@@ -16,7 +16,7 @@ import org.thymeleaf.templateresolver.TemplateResolver;
 import java.util.Set;
 
 @EnableWebMvc
-@ComponentScan(basePackages = {"org.yellowbinary.server.admin"})
+@ComponentScan(basePackages = {"org.yellowbinary.server.admin.basic"})
 @Configuration
 public class CmsAdminConfigurationSupport {
 
@@ -60,7 +60,7 @@ public class CmsAdminConfigurationSupport {
         return engine;
     }
 
-    @Bean
+    @Bean(name = "defaultTemplateResolver")
     public ThymeleafViewResolver thymeleafViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine());

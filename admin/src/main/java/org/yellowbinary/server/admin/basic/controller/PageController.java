@@ -1,16 +1,18 @@
 package org.yellowbinary.server.admin.basic.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/admin/page")
+@RequestMapping("/page")
 public class PageController {
 
     @RequestMapping("/")
-    public ModelAndView listPages() {
-        return new ModelAndView("page/list", "msg", "Hello World");
+    public String listPages(Model model) {
+        model.addAttribute("msg", "Hello World");
+        return "page/list";
     }
 
 }

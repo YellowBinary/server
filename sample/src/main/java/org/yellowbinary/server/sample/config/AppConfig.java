@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.yellowbinary.server.admin.basic.config.EnableCmsAdmin;
 import org.yellowbinary.server.backend.config.security.EnableCmsApiSecurity;
 import org.yellowbinary.server.backend.config.EnableCms;
 import org.yellowbinary.server.preview.config.EnableCmsPreview;
@@ -18,6 +19,7 @@ import javax.annotation.PostConstruct;
 @EnableCms
 @EnableCmsApiSecurity()
 @EnableCmsPreview
+@EnableCmsAdmin
 @Import(DataConfig.class)
 public class AppConfig {
 
