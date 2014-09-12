@@ -1,4 +1,4 @@
-package org.yellowbinary.server.admin.basic.config;
+package org.yellowbinary.server.admin.ui.config;
 
 import com.google.common.collect.Sets;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
@@ -16,7 +16,7 @@ import org.thymeleaf.templateresolver.TemplateResolver;
 import java.util.Set;
 
 @EnableWebMvc
-@ComponentScan(basePackages = {"org.yellowbinary.server.admin.basic"})
+@ComponentScan(basePackages = {"org.yellowbinary.server.admin.ui"})
 @Configuration
 public class CmsAdminConfigurationSupport {
 
