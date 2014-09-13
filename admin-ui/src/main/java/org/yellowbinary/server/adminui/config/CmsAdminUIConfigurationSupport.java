@@ -1,4 +1,4 @@
-package org.yellowbinary.server.admin.ui.config;
+package org.yellowbinary.server.adminui.config;
 
 import com.google.common.collect.Sets;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
@@ -16,9 +16,9 @@ import org.thymeleaf.templateresolver.TemplateResolver;
 import java.util.Set;
 
 @EnableWebMvc
-@ComponentScan(basePackages = {"org.yellowbinary.server.admin.ui"})
+@ComponentScan(basePackages = {"org.yellowbinary.server.adminui.ui"})
 @Configuration
-public class CmsAdminConfigurationSupport {
+public class CmsAdminUIConfigurationSupport {
 
 /*
     @Bean(name = "viewResolver")

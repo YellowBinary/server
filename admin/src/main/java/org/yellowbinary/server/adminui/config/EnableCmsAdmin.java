@@ -1,4 +1,4 @@
-package org.yellowbinary.server.admin.ui.config;
+package org.yellowbinary.server.adminui.config;
 
 import org.springframework.context.annotation.Import;
 

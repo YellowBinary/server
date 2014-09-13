@@ -1,4 +1,4 @@
-package org.yellowbinary.server.admin.ui.controller;
+package org.yellowbinary.server.adminui.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

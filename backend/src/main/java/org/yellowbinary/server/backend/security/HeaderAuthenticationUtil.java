@@ -61,14 +61,4 @@ public class HeaderAuthenticationUtil {
         return sessionMaxAge;
     }
 
-    private String formatIfNotZero(int value, String plural, String singleton) {
-        if (value > 0) {
-            if (value > 1) {
-                return "" + value + " " + plural;
-            }
-            return "" + value + " " + singleton;
-        }
-        return "";
-    }
-
 }

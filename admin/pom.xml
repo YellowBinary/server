@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>admin-ui</artifactId>
+    <artifactId>admin</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -19,14 +19,16 @@
             <artifactId>core</artifactId>
             <version>0.1.0</version>
         </dependency>
+
         <dependency>
             <groupId>org.yellowbinary.server</groupId>
-            <artifactId>admin</artifactId>
+            <artifactId>backend</artifactId>
             <version>0.1.0</version>
         </dependency>
+
         <dependency>
             <groupId>org.yellowbinary.server</groupId>
-            <artifactId>admin-security</artifactId>
+            <artifactId>backend-security</artifactId>
             <version>0.1.0</version>
         </dependency>
 
@@ -159,5 +161,6 @@
         </dependency>
 
     </dependencies>
+
 
 </project>

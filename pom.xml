@@ -13,6 +13,7 @@
         <module>backend-security</module>
         <module>admin</module>
         <module>admin-security</module>
+        <module>admin-ui</module>
         <module>preview</module>
         <module>sample</module>
     </modules>
